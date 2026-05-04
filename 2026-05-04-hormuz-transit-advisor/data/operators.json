@@ -1,0 +1,43 @@
+[
+  {
+    "name": "Maersk",
+    "status": "rerouted",
+    "since": "2026-05-03T18:00:00Z",
+    "sourceUrl": "https://www.maersk.com/news/articles/2026/05/03/hormuz-transit-update"
+  },
+  {
+    "name": "MSC",
+    "status": "monitoring",
+    "since": "2026-05-04T06:00:00Z",
+    "sourceUrl": "https://www.msc.com/en/newsroom/customer-advisories"
+  },
+  {
+    "name": "Frontline",
+    "status": "suspended",
+    "since": "2026-05-04T09:30:00Z",
+    "sourceUrl": "https://www.frontline.bm/press-releases"
+  },
+  {
+    "name": "Euronav",
+    "status": "suspended",
+    "since": "2026-05-04T08:00:00Z",
+    "sourceUrl": "https://www.euronav.com/en/investors/announcements"
+  },
+  {
+    "name": "Teekay",
+    "status": "rerouted",
+    "since": "2026-05-03T22:00:00Z",
+    "sourceUrl": "https://www.teekay.com/press-releases"
+  },
+  {
+    "name": "NYK Line",
+    "status": "monitoring",
+    "since": "2026-05-04T03:00:00Z",
+    "sourceUrl": "https://www.nyk.com/english/news/"
+  },
+  {
+    "name": "Bahri",
+    "status": "monitoring",
+    "since": "2026-05-04T05:30:00Z"
+  }
+]

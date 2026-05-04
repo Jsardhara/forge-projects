@@ -1,0 +1,26 @@
+[
+  {
+    "id": "imscc-2026-05-04-eb",
+    "authority": "IMSCC / CENTCOM",
+    "start": "2026-05-04T16:00:00Z",
+    "end": "2026-05-04T20:00:00Z",
+    "notes": "Eastbound convoy lane, waypoint H1 → H4. Pre-register via Bahrain ops cell.",
+    "sourceUrl": "https://www.centcom.mil/MEDIA/PRESS-RELEASES/Press-Release-View/Article/2026-05-04-imscc-lanes/"
+  },
+  {
+    "id": "imscc-2026-05-05-wb",
+    "authority": "IMSCC / CENTCOM",
+    "start": "2026-05-05T04:00:00Z",
+    "end": "2026-05-05T08:00:00Z",
+    "notes": "Westbound convoy lane, waypoint H4 → H1. USS Bulkeley lead escort.",
+    "sourceUrl": "https://www.navy.mil/Press-Office/News-Stories/Article/2026/uss-bulkeley-escort/"
+  },
+  {
+    "id": "jmsdf-2026-05-05",
+    "authority": "JMSDF",
+    "start": "2026-05-05T10:00:00Z",
+    "end": "2026-05-05T14:00:00Z",
+    "notes": "JS Akizuki close-escort for Japanese-flag LNG carriers, return leg.",
+    "sourceUrl": "https://www3.nhk.or.jp/news/html/20260501/k10014999991000.html"
+  }
+]

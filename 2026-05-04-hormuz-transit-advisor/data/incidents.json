@@ -1,0 +1,128 @@
+[
+  {
+    "id": "seed-2026-05-04-attack-mt-aurora",
+    "kind": "attack",
+    "title": "MT Aurora Sun struck by limpet mine off Bandar Abbas",
+    "summary": "Liberian-flagged tanker reports explosion at port-side hull plate. Crew safe, vessel adrift. UKMTO advisory issued; CENTCOM rerouting MQ-9 patrol.",
+    "source": "Reuters",
+    "sourceUrl": "https://www.reuters.com/world/middle-east/mt-aurora-sun-struck-bandar-abbas-2026-05-04/",
+    "timestamp": "2026-05-04T08:14:00Z",
+    "location": "26.45N 56.20E",
+    "vessel": "MT Aurora Sun"
+  },
+  {
+    "id": "seed-2026-05-04-nearmiss-eternal-star",
+    "kind": "missile-near-miss",
+    "title": "Anti-ship missile splashes 600m from VLCC Eternal Star",
+    "summary": "IRGC-launched cruise missile fell short of Marshall Islands-flagged VLCC transiting eastbound TSS. No injuries. Master diverted to UAE waters.",
+    "source": "UKMTO",
+    "sourceUrl": "https://www.ukmto.org/advisories/2026/0504-eternal-star",
+    "timestamp": "2026-05-04T05:42:00Z",
+    "location": "26.55N 56.30E",
+    "vessel": "VLCC Eternal Star"
+  },
+  {
+    "id": "seed-2026-05-04-advisory-ukmto-024",
+    "kind": "advisory",
+    "title": "UKMTO Advisory 024/26 — Heightened threat to merchant shipping",
+    "summary": "All flags advised to maintain maximum vigilance, BMP5 hard. Two-hour reporting cycle to UKMTO until further notice.",
+    "source": "UKMTO",
+    "sourceUrl": "https://www.ukmto.org/advisories/2026/024",
+    "timestamp": "2026-05-04T03:10:00Z",
+    "location": "Strait of Hormuz"
+  },
+  {
+    "id": "seed-2026-05-04-advisory-imscc",
+    "kind": "advisory",
+    "title": "IMSCC: Two-ship convoy lanes activated for eastbound transit",
+    "summary": "International Maritime Security Construct opens escorted lanes between waypoint H1 and H4. Pre-registration via Bahrain ops cell required.",
+    "source": "CENTCOM",
+    "sourceUrl": "https://www.centcom.mil/MEDIA/PRESS-RELEASES/Press-Release-View/Article/2026-05-04-imscc-lanes/",
+    "timestamp": "2026-05-04T01:55:00Z",
+    "location": "Strait of Hormuz"
+  },
+  {
+    "id": "seed-2026-05-03-escort-uss-bulkeley",
+    "kind": "escort",
+    "title": "USS Bulkeley escorts seven-ship eastbound convoy through Hormuz",
+    "summary": "Arleigh Burke-class destroyer leads first publicly-acknowledged escort since 2019. Convoy includes two LNG carriers under Greek flag.",
+    "source": "US Navy",
+    "sourceUrl": "https://www.navy.mil/Press-Office/News-Stories/Article/2026/uss-bulkeley-escort/",
+    "timestamp": "2026-05-03T22:30:00Z",
+    "location": "Strait of Hormuz"
+  },
+  {
+    "id": "seed-2026-05-03-attack-pacific-gem",
+    "kind": "attack",
+    "title": "Drone strike disables tanker Pacific Gem in Gulf of Oman",
+    "summary": "Marshall Islands-flagged product tanker reports unmanned aerial system impact on bridge wing. Two crew injured; vessel under tow to Fujairah.",
+    "source": "Bloomberg",
+    "sourceUrl": "https://www.bloomberg.com/news/2026-05-03/pacific-gem-drone-strike-gulf-of-oman",
+    "timestamp": "2026-05-03T19:05:00Z",
+    "location": "25.00N 57.50E",
+    "vessel": "Pacific Gem"
+  },
+  {
+    "id": "seed-2026-05-03-advisory-mara",
+    "kind": "advisory",
+    "title": "MARAD Maritime Advisory 2026-007: Avoid Iranian territorial waters",
+    "summary": "US-flagged vessels strongly advised to avoid 12nm IRGC-controlled coastal band. Pre-position security teams; activate AIS even in declared zones.",
+    "source": "MARAD",
+    "sourceUrl": "https://www.maritime.dot.gov/msci/2026-007",
+    "timestamp": "2026-05-03T14:20:00Z",
+    "location": "Persian Gulf"
+  },
+  {
+    "id": "seed-2026-05-02-attack-blue-glory",
+    "kind": "attack",
+    "title": "IRGC fast boats board chemical tanker Blue Glory near Hengam",
+    "summary": "Eight IRGC small craft boarded Panamanian-flagged chemical tanker; crew detained briefly. Vessel released after six hours, transit resumed.",
+    "source": "AP News",
+    "sourceUrl": "https://apnews.com/article/blue-glory-irgc-boarding-2026",
+    "timestamp": "2026-05-02T20:00:00Z",
+    "location": "26.55N 55.80E",
+    "vessel": "Blue Glory"
+  },
+  {
+    "id": "seed-2026-05-02-nearmiss-koryo-ace",
+    "kind": "missile-near-miss",
+    "title": "Houthi cruise missile shadows MV Koryo Ace through Bab el-Mandeb chokepoint",
+    "summary": "Combined Task Force 153 frigate intercepts inbound missile 12nm off vessel. No damage. Owner suspends Red Sea-Gulf rotation pending review.",
+    "source": "Reuters",
+    "sourceUrl": "https://www.reuters.com/world/middle-east/koryo-ace-cruise-missile-2026-05-02/",
+    "timestamp": "2026-05-02T11:45:00Z",
+    "location": "Bab el-Mandeb",
+    "vessel": "MV Koryo Ace"
+  },
+  {
+    "id": "seed-2026-05-02-advisory-centcom",
+    "kind": "advisory",
+    "title": "CENTCOM stands up dedicated escort task element for Hormuz",
+    "summary": "Task Element 153.2 to provide 24/7 escort coverage during heightened threat period. Two destroyers and three patrol craft committed.",
+    "source": "CENTCOM",
+    "sourceUrl": "https://www.centcom.mil/MEDIA/PRESS-RELEASES/Press-Release-View/Article/2026-05-02-task-element-153-2/",
+    "timestamp": "2026-05-02T07:30:00Z",
+    "location": "Strait of Hormuz"
+  },
+  {
+    "id": "seed-2026-05-01-escort-jms-akizuki",
+    "kind": "escort",
+    "title": "JS Akizuki conducts close escort for two Japanese-flagged LNG carriers",
+    "summary": "Japan Maritime Self-Defense Force destroyer maintains 1nm screen for return leg. Tokyo coordinates rotation with US 5th Fleet.",
+    "source": "NHK",
+    "sourceUrl": "https://www3.nhk.or.jp/news/html/20260501/k10014999991000.html",
+    "timestamp": "2026-05-01T23:10:00Z",
+    "location": "Strait of Hormuz"
+  },
+  {
+    "id": "seed-2026-04-30-attack-southern-pearl",
+    "kind": "attack",
+    "title": "Tanker Southern Pearl hit by uncrewed surface vessel south of Larak",
+    "summary": "USV strike causes flooding to forepeak. Crew contains damage; vessel proceeds to Khor Fakkan under own power.",
+    "source": "Lloyd's List",
+    "sourceUrl": "https://www.lloydslist.com/LL1149999/Southern-Pearl-USV-strike",
+    "timestamp": "2026-04-30T16:25:00Z",
+    "location": "26.20N 55.90E",
+    "vessel": "Southern Pearl"
+  }
+]
