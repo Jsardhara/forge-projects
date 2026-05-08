@@ -1,0 +1,27 @@
+[
+  {
+    "name": "MV Atlantic Voyager",
+    "operator": "Voyager Cruise Lines",
+    "route": "Southampton → Funchal → Tenerife → Las Palmas",
+    "dates": { "start": "2026-04-28", "end": "2026-05-12" },
+    "ports": [
+      { "name": "Southampton, UK", "date": "2026-04-28" },
+      { "name": "Funchal, Madeira", "date": "2026-05-03" },
+      { "name": "Santa Cruz de Tenerife", "date": "2026-05-06" }
+    ],
+    "status": "confirmed_outbreak",
+    "advisory": "If you sailed on this voyage between 28 Apr and 12 May 2026, monitor for symptoms for 6 weeks after disembarkation. Contact UKHSA or your local public health authority."
+  },
+  {
+    "name": "RMS St Helena (resupply)",
+    "operator": "AW Ship Management",
+    "route": "Cape Town → Tristan da Cunha",
+    "dates": { "start": "2026-04-15", "end": "2026-04-22" },
+    "ports": [
+      { "name": "Cape Town, South Africa", "date": "2026-04-15" },
+      { "name": "Edinburgh of the Seven Seas, Tristan da Cunha", "date": "2026-04-22" }
+    ],
+    "status": "under_investigation",
+    "advisory": "Investigated as possible introduction route to Tristan da Cunha. No confirmed cases linked yet."
+  }
+]

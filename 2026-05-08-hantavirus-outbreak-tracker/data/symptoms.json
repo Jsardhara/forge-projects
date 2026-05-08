@@ -1,0 +1,45 @@
+{
+  "questions": [
+    {
+      "id": "core_symptoms",
+      "prompt": "In the last 6 weeks, have you had a sudden fever (≥38°C / 100.4°F) AND severe muscle aches (especially thighs, hips, back)?",
+      "help": "Hantavirus typically starts 1–8 weeks after exposure with flu-like illness.",
+      "options": [
+        { "value": "yes", "label": "Yes — both fever and severe muscle aches", "weight": 2 },
+        { "value": "one", "label": "One of them, not both", "weight": 1 },
+        { "value": "no", "label": "Neither", "weight": 0 }
+      ]
+    },
+    {
+      "id": "respiratory",
+      "prompt": "Are you short of breath, coughing, or feeling chest tightness?",
+      "help": "Hantavirus Pulmonary Syndrome (HPS) progresses rapidly to lung involvement. This is an emergency sign.",
+      "options": [
+        { "value": "severe", "label": "Yes — severe, struggling to breathe", "weight": 3 },
+        { "value": "mild", "label": "Mild cough or chest discomfort", "weight": 1 },
+        { "value": "no", "label": "No respiratory symptoms", "weight": 0 }
+      ]
+    },
+    {
+      "id": "exposure",
+      "prompt": "In the last 6 weeks, were you on the MV Atlantic Voyager OR in contact with someone who was, OR did you visit areas with known rodent infestations?",
+      "help": "Transmission is via aerosolized rodent urine/droppings or, in rare strains, human-to-human in close quarters.",
+      "options": [
+        { "value": "ship", "label": "Yes — on MV Atlantic Voyager since 28 Apr 2026", "weight": 2 },
+        { "value": "contact", "label": "Yes — close contact with a passenger/crew member", "weight": 1 },
+        { "value": "rodent", "label": "Yes — rodent exposure (cabins, barns, fieldwork)", "weight": 1 },
+        { "value": "no", "label": "No known exposure", "weight": 0 }
+      ]
+    },
+    {
+      "id": "other",
+      "prompt": "Any of these: severe headache, dizziness, chills, nausea/vomiting, abdominal pain, blurred vision?",
+      "help": "These accompany the prodromal phase before respiratory or kidney complications.",
+      "options": [
+        { "value": "many", "label": "Three or more", "weight": 2 },
+        { "value": "few", "label": "One or two", "weight": 1 },
+        { "value": "none", "label": "None", "weight": 0 }
+      ]
+    }
+  ]
+}

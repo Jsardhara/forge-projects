@@ -1,0 +1,67 @@
+[
+  {
+    "id": "mv-atlantic-voyager",
+    "location": "MV Atlantic Voyager (cruise ship en route to Canary Islands)",
+    "lat": 30.5,
+    "lng": -16.2,
+    "status": "confirmed",
+    "cases": 9,
+    "suspected": 14,
+    "updated": "2026-05-08",
+    "source_url": "https://www.aljazeera.com/news/2026/5/8/hantavirus-cases-rise-on-cruise-ship-as-uk-tracks-nationals",
+    "source_label": "Al Jazeera, 8 May 2026",
+    "note": "Onboard outbreak. Ship redirected; passengers being screened on arrival. UK Health Security Agency tracking British nationals."
+  },
+  {
+    "id": "tenerife-port",
+    "location": "Tenerife, Canary Islands (Spain)",
+    "lat": 28.4636,
+    "lng": -16.2518,
+    "status": "suspected",
+    "cases": 0,
+    "suspected": 3,
+    "updated": "2026-05-08",
+    "source_url": "https://www.aljazeera.com/news/2026/5/8/hantavirus-cases-rise-on-cruise-ship-as-uk-tracks-nationals",
+    "source_label": "Al Jazeera, 8 May 2026",
+    "note": "Three port workers reporting fever and myalgia after contact with cruise crew. Awaiting PCR confirmation."
+  },
+  {
+    "id": "tristan-da-cunha",
+    "location": "Tristan da Cunha (South Atlantic)",
+    "lat": -37.1052,
+    "lng": -12.2777,
+    "status": "suspected",
+    "cases": 0,
+    "suspected": 1,
+    "updated": "2026-05-07",
+    "source_url": "https://www.who.int/emergencies/disease-outbreak-news",
+    "source_label": "WHO Disease Outbreak News",
+    "note": "One suspected case in remote settlement. Sample sent to South Africa for sequencing. Rodent control underway."
+  },
+  {
+    "id": "uk-cluster",
+    "location": "United Kingdom — returning travelers",
+    "lat": 51.5074,
+    "lng": -0.1278,
+    "status": "monitoring",
+    "cases": 0,
+    "suspected": 0,
+    "updated": "2026-05-08",
+    "source_url": "https://www.gov.uk/government/organisations/uk-health-security-agency",
+    "source_label": "UK Health Security Agency",
+    "note": "UKHSA contacting British nationals who disembarked from MV Atlantic Voyager since 1 May 2026. No confirmed UK cases yet."
+  },
+  {
+    "id": "madeira-port",
+    "location": "Funchal, Madeira (Portugal)",
+    "lat": 32.6669,
+    "lng": -16.9241,
+    "status": "monitoring",
+    "cases": 0,
+    "suspected": 0,
+    "updated": "2026-05-08",
+    "source_url": "https://www.who.int/emergencies/disease-outbreak-news",
+    "source_label": "WHO",
+    "note": "Port placed on enhanced screening as MV Atlantic Voyager called there 3 May 2026."
+  }
+]
