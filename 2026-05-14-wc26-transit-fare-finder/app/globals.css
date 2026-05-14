@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pitch: oklch(22% 0.04 145);
+  --color-pitch-deep: oklch(14% 0.03 145);
+  --color-stripe: oklch(28% 0.05 145);
+  --color-chalk: oklch(98% 0 0);
+  --color-flame: oklch(72% 0.18 35);
+  --color-electric: oklch(82% 0.18 195);
+  --color-gold: oklch(86% 0.16 90);
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: var(--color-pitch-deep);
+  color: var(--color-chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer utilities {
+  .field-stripe {
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-pitch) 0,
+      var(--color-pitch) 80px,
+      var(--color-stripe) 80px,
+      var(--color-stripe) 160px
+    );
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 3px 3px;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+  .card-edge {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 1px 0 rgba(0,0,0,0.6),
+      0 20px 40px -20px rgba(0,0,0,0.7);
+  }
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-electric);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "wc26-met-01",
+    "label": "Group Stage — Match A",
+    "teams": "TBD vs TBD",
+    "date": "2026-06-13",
+    "kickoff": "15:00",
+    "endsApprox": "17:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-02",
+    "label": "Group Stage — Match B",
+    "teams": "TBD vs TBD",
+    "date": "2026-06-18",
+    "kickoff": "21:00",
+    "endsApprox": "23:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-03",
+    "label": "Group Stage — Match C",
+    "teams": "TBD vs TBD",
+    "date": "2026-06-22",
+    "kickoff": "18:00",
+    "endsApprox": "20:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-04",
+    "label": "Group Stage — Match D",
+    "teams": "TBD vs TBD",
+    "date": "2026-06-25",
+    "kickoff": "12:00",
+    "endsApprox": "14:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-05",
+    "label": "Round of 32",
+    "teams": "TBD vs TBD",
+    "date": "2026-06-30",
+    "kickoff": "21:00",
+    "endsApprox": "23:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-06",
+    "label": "Round of 16",
+    "teams": "TBD vs TBD",
+    "date": "2026-07-06",
+    "kickoff": "18:00",
+    "endsApprox": "20:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-07",
+    "label": "Quarterfinal",
+    "teams": "TBD vs TBD",
+    "date": "2026-07-11",
+    "kickoff": "16:00",
+    "endsApprox": "18:30",
+    "venue": "MetLife Stadium"
+  },
+  {
+    "id": "wc26-met-08",
+    "label": "Final",
+    "teams": "TBD vs TBD",
+    "date": "2026-07-19",
+    "kickoff": "15:00",
+    "endsApprox": "17:30",
+    "venue": "MetLife Stadium"
+  }
+]
