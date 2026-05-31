@@ -21,7 +21,7 @@ TIERS = {
         "price_display": "$19/mo",
         "requests_per_minute": 100,
         "features": ["All signals", "WebSocket", "Priority support"],
-        "stripe_price_id": os.getenv("STRIPE_PRICE_PRO"),
+        "stripe_price_id": os.getenv("STRIPE_PRICE_PRO", "price_1TdGN2462Oake79BimmxI78h"),
     },
     "enterprise": {
         "name": "Enterprise",
@@ -29,7 +29,7 @@ TIERS = {
         "price_display": "$99/mo",
         "requests_per_minute": 1000,
         "features": ["Everything in Pro", "Webhooks", "Custom integrations", "Dedicated support"],
-        "stripe_price_id": os.getenv("STRIPE_PRICE_ENTERPRISE"),
+        "stripe_price_id": os.getenv("STRIPE_PRICE_ENTERPRISE", "price_1TdGN3462Oake79BEKJYRJ7P"),
     },
 }
 
