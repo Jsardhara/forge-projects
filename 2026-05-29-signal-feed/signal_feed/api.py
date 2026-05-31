@@ -9,7 +9,7 @@ from typing import Any
 
 import asyncio
 
-from fastapi import FastAPI, HTTPException, Query, Depends, Header, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Query, Depends, Header, WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select, func, desc
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,6 +21,11 @@ from .database import (
     Signal, ApiKey,
 )
 from .collectors import collect_all
+from .stripe_payments import (
+    create_checkout_session, create_customer_portal_session,
+    verify_webhook, get_tier, STRIPE_PUBLISHABLE_KEY,
+)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -41,7 +46,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Signal Feed API",
-    version="0.1.0",
+    version="0.2.0",
     description="AI-powered market signal aggregator — news, social, on-chain",
     lifespan=lifespan,
 )
@@ -58,11 +63,12 @@ engine = None
 session_factory = None
 _latest_signals_cache: list[dict] = []
 _last_fetch: datetime | None = None
+
+
 async def verify_api_key(x_api_key: str = Header(..., alias="X-API-Key")) -> str:
     if not x_api_key:
         raise HTTPException(status_code=401, detail="Missing X-API-Key header")
 
-    # Demo key bypass (no DB check needed)
     if x_api_key == "sf-demo-key-2026":
         return "free"
 
@@ -86,7 +92,7 @@ async def verify_api_key(x_api_key: str = Header(..., alias="X-API-Key")) -> str
 async def health():
     return {
         "status": "ok",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "last_fetch": _last_fetch.isoformat() if _last_fetch else None,
         "cached_signals": len(_latest_signals_cache),
     }
@@ -119,12 +125,7 @@ async def get_signals(
 
     return {
         "data": signals,
-        "meta": {
-            "total": total,
-            "limit": limit,
-            "offset": offset,
-            "tier": tier,
-        },
+        "meta": {"total": total, "limit": limit, "offset": offset, "tier": tier},
     }
 
 
@@ -157,8 +158,8 @@ async def sentiment_overview(tier: str = Depends(verify_api_key)):
         return {"overall": "neutral", "breakdown": {}, "total": 0}
 
     total = len(_latest_signals_cache)
-    by_source: dict[str, dict] = defaultdict(lambda: {"total": 0, "bullish": 0, "bearish": 0, "neutral": 0, "avg_score": 0.0})
-    by_cat: dict[str, dict] = defaultdict(lambda: {"total": 0, "bullish": 0, "bearish": 0, "neutral": 0, "avg_score": 0.0})
+    by_source: dict = defaultdict(lambda: {"total": 0, "bullish": 0, "bearish": 0, "neutral": 0, "avg_score": 0.0})
+    by_cat: dict = defaultdict(lambda: {"total": 0, "bullish": 0, "bearish": 0, "neutral": 0, "avg_score": 0.0})
 
     for s in _latest_signals_cache:
         src = s.get("source", "unknown")
@@ -197,7 +198,6 @@ async def trigger_collection(tier: str = Depends(verify_api_key)):
     _latest_signals_cache = raw_signals
     _last_fetch = datetime.now(timezone.utc)
 
-    # Persist to DB if available
     if session_factory and engine:
         try:
             async with session_factory() as session:
@@ -215,14 +215,85 @@ async def trigger_collection(tier: str = Depends(verify_api_key)):
                     )
                     session.add(signal_obj)
                 await session.commit()
-        except Exception as e:
-            pass  # Cache is already updated, DB failure is non-fatal
+        except Exception:
+            pass
 
+    return {"collected": len(raw_signals), "timestamp": _last_fetch.isoformat(), "tier": tier}
+
+
+# --- Stripe Payment Endpoints ---
+
+@app.get("/api/v1/pricing")
+async def get_pricing():
+    """Get available pricing tiers and Stripe publishable key."""
+    from .stripe_payments import TIERS
     return {
-        "collected": len(raw_signals),
-        "timestamp": _last_fetch.isoformat(),
-        "tier": tier,
+        "tiers": {
+            tid: {
+                "name": info["name"],
+                "price_display": info.get("price_display", "Free"),
+                "requests_per_minute": info["requests_per_minute"],
+                "features": info["features"],
+            }
+            for tid, info in TIERS.items()
+        },
+        "publishable_key": STRIPE_PUBLISHABLE_KEY,
     }
+
+
+@app.post("/api/v1/checkout")
+async def create_checkout(
+    tier_id: str = Query(..., pattern="^(pro|enterprise)$"),
+    email: str = Query(...),
+    success_url: str = Query("https://example.com/success"),
+    cancel_url: str = Query("https://example.com/cancel"),
+):
+    """Create a Stripe Checkout session for subscription signup."""
+    result = create_checkout_session(tier_id, email, success_url, cancel_url)
+    return result
+
+
+@app.post("/api/v1/webhook/stripe")
+async def stripe_webhook(
+    request: Request,
+    stripe_signature: str = Header(None, alias="Stripe-Signature"),
+):
+    """Handle Stripe webhook events (checkout completed, subscription changes)."""
+    payload = await request.body()
+    event = verify_webhook(payload, stripe_signature)
+
+    if event["type"] == "checkout.session.completed":
+        session_data = event["data"]["object"]
+        customer_id = session_data.get("customer")
+        customer_email = session_data.get("customer_email")
+        tier = session_data.get("metadata", {}).get("tier", "pro")
+        if session_factory:
+            async with session_factory() as session:
+                result = await session.execute(
+                    select(ApiKey).where(ApiKey.key == f"stripe_{customer_id}")
+                )
+                if not result.scalar_one_or_none():
+                    session.add(ApiKey(
+                        key=f"stripe_{customer_id}",
+                        tier=tier,
+                        name=f"Stripe: {customer_email}",
+                        is_active=1,
+                    ))
+                    await session.commit()
+
+    elif event["type"] == "customer.subscription.deleted":
+        customer_id = event["data"]["object"].get("customer")
+        if session_factory:
+            async with session_factory() as session:
+                result = await session.execute(
+                    select(ApiKey).where(ApiKey.key == f"stripe_{customer_id}")
+                )
+                key_obj = result.scalar_one_or_none()
+                if key_obj:
+                    key_obj.is_active = 0
+                    await session.commit()
+
+    return {"status": "processed"}
 
 
 # --- WebSocket ---
@@ -231,15 +302,12 @@ async def websocket_endpoint(websocket: WebSocket):
     """WebSocket endpoint for streaming live signals (Pro tier)."""
     await websocket.accept()
     try:
-        # Send current snapshot
         await websocket.send_json({
             "type": "snapshot",
             "data": _latest_signals_cache[:20],
             "timestamp": datetime.now(timezone.utc).isoformat(),
         })
 
-        # Keep alive, push updates every 30 seconds
-        import asyncio
         while True:
             await asyncio.sleep(30)
             if _latest_signals_cache:
