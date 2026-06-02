@@ -10,4 +10,5 @@ One project per day, autonomously generated from world news.
 | 2026-05-29 | Signal Feed — Market Sentiment API | [Pipeline](https://github.com/Jsardhara/forge-projects) | [2026-05-29-signal-feed](./2026-05-29-signal-feed) |
 | 2026-05-30 | MCP Tool Scout — Discover & Score MCP Servers | [Pipeline](https://github.com/Jsardhara/forge-projects) | [2026-05-30-mcp-tool-scout](./2026-05-30-mcp-tool-scout) |
 | 2026-05-31 | Prompt Marketplace | Internal Idea | [2026-05-31-prompt-marketplace](./2026-05-31-prompt-marketplace) |
-| 2026-06-01 | AI Leak Scanner — Security Audit for AI Extensions | [HN](https://news.ycombinator.com/item?id=48346257) | [2026-06-01-ai-leak-scanner](./2026-06-01-ai-leak-scanner) |
+|| 2026-06-01 | AI Leak Scanner — Security Audit for AI Extensions | [HN](https://news.ycombinator.com/item?id=48346257) | [2026-06-01-ai-leak-scanner](./2026-06-01-ai-leak-scanner) |
+|| 2026-06-02 | AI Cost Guard — Track & Optimize Team AI Spending | [Lens Intel](https://jsardhara.github.io/ai-intelligence-brief/) | [2026-06-02-ai-cost-guard](./2026-06-02-ai-cost-guard) |
