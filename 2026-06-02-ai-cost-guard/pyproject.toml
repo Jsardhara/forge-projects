@@ -1,0 +1,22 @@
+[project]
+name = "ai-cost-guard"
+version = "0.1.0"
+description = "Track, optimize, and control team AI API spending"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn>=0.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27.0",  # for TestClient
+]
+
+[project.scripts]
+ai-cost-guard = "aicostguard.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
