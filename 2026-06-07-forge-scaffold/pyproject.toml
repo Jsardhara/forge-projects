@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "forge-scaffold"
+version = "0.1.0"
+description = "CLI tool that automates the Forge daily build scaffolding workflow"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.0",
+    "jinja2>=3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+forge-scaffold = "forge_scaffold.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
