@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentPulse — Jarmes Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        bg: '#0a0a0f',
+        card: '#111118',
+        border: '#1e1e2e',
+        accent: '#6366f1',
+        accent2: '#818cf8',
+        success: '#22c55e',
+        warn: '#f59e0b',
+        danger: '#ef4444',
+        muted: '#6b7280',
+      }
+    }
+  }
+}
+</script>
+<style>
+body { background: #0a0a0f; color: #e5e7eb; font-family: 'Inter', system-ui, sans-serif; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #111118; }
+::-webkit-scrollbar-thumb { background: #1e1e2e; border-radius: 3px; }
+.card { background: #111118; border: 1px solid #1e1e2e; border-radius: 12px; }
+.stat-value { font-size: 2rem; font-weight: 700; line-height: 1; }
+.stat-label { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.status-success { background: #22c55e; }
+.status-failed { background: #ef4444; }
+.status-pending { background: #f59e0b; }
+.refresh-indicator { animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+</head>
+<body class="min-h-screen p-6">
+
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+      <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="text-xl font-bold text-white">AgentPulse</h1>
+      <p class="text-xs text-muted">Jarmes Multi-Agent Dashboard</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <span id="last-refresh" class="text-xs text-muted"></span>
+    <span class="refresh-indicator w-2 h-2 rounded-full bg-success"></span>
+    <span class="text-xs text-muted">Live</span>
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+  <div class="card p-4">
+    <div class="stat-value text-white" id="stat-builds">—</div>
+    <div class="stat-label mt-1">Total Builds</div>
+  </div>
+  <div class="card p-4">
+    <div class="stat-value text-success" id="stat-success">—</div>
+    <div class="stat-label mt-1">Successful</div>
+  </div>
+  <div class="card p-4">
+    <div class="stat-value text-danger" id="stat-failed">—</div>
+    <div class="stat-label mt-1">Failed</div>
+  </div>
+  <div class="card p-4">
+    <div class="stat-value text-accent2" id="stat-cost">$—</div>
+    <div class="stat-label mt-1">Total Cost</div>
+  </div>
+  <div class="card p-4">
+    <div class="stat-value text-white" id="stat-agents">—</div>
+    <div class="stat-label mt-1">Active Agents</div>
+  </div>
+  <div class="card p-4">
+    <div class="stat-value text-white" id="stat-jobs">—</div>
+    <div class="stat-label mt-1">Sentinel Jobs</div>
+  </div>
+</div>
+
+<!-- Last Build -->
+<div class="card p-4 mb-8">
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="text-xs text-muted uppercase tracking-wider mb-1">Last Build</div>
+      <div class="text-lg font-semibold text-white" id="last-build-title">Loading...</div>
+    </div>
+    <div class="text-right">
+      <div id="last-build-status" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium">
+        <span class="status-dot"></span>
+        <span>—</span>
+      </div>
+      <div class="text-xs text-muted mt-1" id="last-build-date">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+  <!-- Build History -->
+  <div class="card p-5">
+    <h2 class="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+      <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+      </svg>
+      Build History
+    </h2>
+    <div id="builds-list" class="space-y-2 max-h-80 overflow-y-auto">
+      <div class="text-muted text-sm">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Agent Activity -->
+  <div class="card p-5">
+    <h2 class="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+      <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+      </svg>
+      Agent Activity
+    </h2>
+    <div id="agents-list" class="space-y-2 max-h-80 overflow-y-auto">
+      <div class="text-muted text-sm">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Sentinel Health -->
+  <div class="card p-5">
+    <h2 class="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+      <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+      </svg>
+      Sentinel Health
+    </h2>
+    <div id="health-list" class="space-y-2 max-h-60 overflow-y-auto">
+      <div class="text-muted text-sm">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Bus Messages -->
+  <div class="card p-5">
+    <h2 class="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+      <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+      </svg>
+      Bus Messages
+    </h2>
+    <div id="bus-list" class="space-y-2 max-h-60 overflow-y-auto">
+      <div class="text-muted text-sm">Loading...</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="mt-8 text-center text-xs text-muted">
+  AgentPulse v0.1.0 · Refreshes every 30s · <span id="footer-timestamp"></span>
+</div>
+
+<script>
+const API = '';
+
+async function fetchAll() {
+  try {
+    const res = await fetch(`${API}/api/all`);
+    return await res.json();
+  } catch (e) {
+    console.error('Failed to fetch:', e);
+    return null;
+  }
+}
+
+function statusClass(s) {
+  if (s === 'success') return 'status-success';
+  if (s === 'failed' || s === 'error') return 'status-failed';
+  return 'status-pending';
+}
+
+function statusBg(s) {
+  if (s === 'success') return 'bg-success/10 text-success';
+  if (s === 'failed' || s === 'error') return 'bg-danger/10 text-danger';
+  return 'bg-warn/10 text-warn';
+}
+
+function formatDate(ts) {
+  if (!ts) return '—';
+  try {
+    const d = new Date(ts);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  } catch { return ts?.slice(0,10) || '—'; }
+}
+
+function formatTime(ts) {
+  if (!ts) return '';
+  try {
+    const d = new Date(ts);
+    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  } catch { return ''; }
+}
+
+function renderDashboard(data) {
+  if (!data) return;
+  const { stats, builds, agents, health, bus } = data;
+
+  // Stats
+  document.getElementById('stat-builds').textContent = stats.total_builds;
+  document.getElementById('stat-success').textContent = stats.successful_builds;
+  document.getElementById('stat-failed').textContent = stats.failed_builds;
+  document.getElementById('stat-cost').textContent = '$' + stats.total_cost_usd.toFixed(2);
+  document.getElementById('stat-agents').textContent = stats.active_agents.length;
+  document.getElementById('stat-jobs').textContent = stats.sentinel_jobs;
+
+  // Last build
+  if (builds && builds.length > 0) {
+    const last = builds[builds.length - 1];
+    document.getElementById('last-build-title').textContent = last.title || last.slug || 'Unknown';
+    document.getElementById('last-build-date').textContent = formatDate(last.ts || last.date) + ' ' + formatTime(last.ts);
+    const statusEl = document.getElementById('last-build-status');
+    statusEl.className = `inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${statusBg(last.status)}`;
+    statusEl.innerHTML = `<span class="status-dot ${statusClass(last.status)}"></span><span>${last.status || 'unknown'}</span>`;
+  }
+
+  // Builds list
+  const buildsList = document.getElementById('builds-list');
+  if (builds && builds.length > 0) {
+    buildsList.innerHTML = builds.slice().reverse().map(b => `
+      <div class="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+        <div class="flex-1 min-w-0">
+          <div class="text-sm text-white truncate">${b.title || b.slug || 'Unknown'}</div>
+          <div class="text-xs text-muted">${formatDate(b.ts || b.date)}</div>
+        </div>
+        <div class="flex items-center gap-3 ml-3">
+          ${b.cost_usd != null ? `<span class="text-xs text-muted">$${Number(b.cost_usd).toFixed(2)}</span>` : ''}
+          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${statusBg(b.status)}">
+            <span class="status-dot ${statusClass(b.status)}"></span>
+            ${b.status || '—'}
+          </span>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    buildsList.innerHTML = '<div class="text-muted text-sm">No builds recorded</div>';
+  }
+
+  // Agents list
+  const agentsList = document.getElementById('agents-list');
+  if (agents && agents.length > 0) {
+    agentsList.innerHTML = agents.slice().reverse().slice(0, 30).map(a => `
+      <div class="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">${a.agent || '?'}</span>
+          <span class="text-sm text-white">${a.action || '—'}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-muted">${a.status || ''}</span>
+          <span class="text-xs text-muted">${formatTime(a.ts)}</span>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    agentsList.innerHTML = '<div class="text-muted text-sm">No agent events</div>';
+  }
+
+  // Health list
+  const healthList = document.getElementById('health-list');
+  if (health && health.length > 0) {
+    const latest = health[health.length - 1];
+    const jobs = latest.jobs || {};
+    healthList.innerHTML = Object.entries(jobs).map(([name, status]) => `
+      <div class="flex items-center justify-between py-1.5">
+        <span class="text-sm text-white font-mono text-xs">${name}</span>
+        <span class="text-xs ${status === 'scheduled' ? 'text-success' : 'text-warn'}">${status}</span>
+      </div>
+    `).join('');
+  } else {
+    healthList.innerHTML = '<div class="text-muted text-sm">No health data</div>';
+  }
+
+  // Bus messages
+  const busList = document.getElementById('bus-list');
+  if (bus && bus.length > 0) {
+    busList.innerHTML = bus.map(m => `
+      <div class="py-2 border-b border-border/50 last:border-0">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono text-accent bg-accent/10 px-2 py-0.5 rounded">${m.topic || '—'}</span>
+          <span class="text-xs text-muted">${m.from_agent || '?'} → ${m.to_agent || '?'}</span>
+        </div>
+        ${m.ts ? `<div class="text-xs text-muted mt-1">${formatDate(m.ts)} ${formatTime(m.ts)}</div>` : ''}
+      </div>
+    `).join('');
+  } else {
+    busList.innerHTML = '<div class="text-muted text-sm">No bus messages</div>';
+  }
+
+  // Timestamps
+  const now = new Date();
+  document.getElementById('last-refresh').textContent = `Updated ${now.toLocaleTimeString()}`;
+  document.getElementById('footer-timestamp').textContent = now.toISOString();
+}
+
+async function refresh() {
+  const data = await fetchAll();
+  renderDashboard(data);
+}
+
+// Initial load
+refresh();
+
+// Auto-refresh every 30s
+setInterval(refresh, 30000);
+</script>
+</body>
+</html>
