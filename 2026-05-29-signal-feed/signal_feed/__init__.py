@@ -21,4 +21,11 @@ class Settings:
     CACHE_TTL_SECONDS: int = int(os.getenv("CACHE_TTL", "300"))
     API_KEY_HEADER: str = "X-API-Key"
 
+    # Stripe
+    STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
+    STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+    STRIPE_PRICE_PRO: str = os.getenv("STRIPE_PRICE_PRO", "")
+    STRIPE_PRICE_ENTERPRISE: str = os.getenv("STRIPE_PRICE_ENTERPRISE", "")
+    BASE_URL: str = os.getenv("BASE_URL", "http://localhost:8000")
+
 settings = Settings()

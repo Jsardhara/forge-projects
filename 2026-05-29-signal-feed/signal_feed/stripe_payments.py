@@ -13,11 +13,13 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Configuration — populated from environment / settings
 # ---------------------------------------------------------------------------
-STRIPE_SECRET_KEY: str = ""          # sk_live_... or sk_test_...
-STRIPE_WEBHOOK_SECRET: str = ""      # whsec_...
-STRIPE_PRICE_PRO: str = ""           # price_... for $19/mo
-STRIPE_PRICE_ENTERPRISE: str = ""    # price_... for $99/mo
-BASE_URL: str = "http://localhost:8000"
+from .settings import settings
+
+STRIPE_SECRET_KEY = settings.STRIPE_SECRET_KEY
+STRIPE_WEBHOOK_SECRET = settings.STRIPE_WEBHOOK_SECRET
+STRIPE_PRICE_PRO = settings.STRIPE_PRICE_PRO
+STRIPE_PRICE_ENTERPRISE = settings.STRIPE_PRICE_ENTERPRISE
+BASE_URL = settings.BASE_URL
 
 router = APIRouter(prefix="/api/v1/stripe", tags=["stripe"])
 
