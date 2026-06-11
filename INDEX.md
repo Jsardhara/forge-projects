@@ -20,3 +20,5 @@ One project per day, autonomously generated from world news.
 | 2026-06-07 | Forge Scaffold — CLI for Automating Daily Build Scaffolding | Self-Improving | [2026-06-07-forge-scaffold](./2026-06-07-forge-scaffold) |
 | 2026-06-08 | AgentPulse — Multi-Agent Activity Dashboard | Self-Improving | [2026-06-08-agent-pulse](./2026-06-08-agent-pulse) |
 | 2026-06-09 | Forge Analytics — Build Pipeline Intelligence & Reporting | Self-Improving | [2026-06-09-forge-analytics](./2026-06-09-forge-analytics) |
+| 2026-06-10 | DevShield — AI Coding Supply Chain Security Scanner | [Lens Intel](https://jsardhara.github.io/ai-intelligence-brief/) | [2026-06-10-devshield](./2026-06-10-devshield) |
+| 2026-06-11 | npm-shield — npm v12 Install Script Auditor & Allowlist Generator | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-11-npm-shield](./2026-06-11-npm-shield) |
