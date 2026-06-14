@@ -23,3 +23,4 @@ One project per day, autonomously generated from world news.
 | 2026-06-10 | DevShield — AI Coding Supply Chain Security Scanner | [Lens Intel](https://jsardhara.github.io/ai-intelligence-brief/) | [2026-06-10-devshield](./2026-06-10-devshield) |
 | 2026-06-11 | npm-shield — npm v12 Install Script Auditor & Allowlist Generator | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-11-npm-shield](./2026-06-11-npm-shield) |
 | 2026-06-12 | AgentWatch — AI Agent Cost & Guardrail Monitoring | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-12-agentwatch](./2026-06-12-agentwatch) |
+| 2026-06-14 | RegShield — AI Compliance & Regulatory Shield Platform | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-14-regshield](./2026-06-14-regshield) |
