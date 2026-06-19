@@ -27,3 +27,4 @@ One project per day, autonomously generated from world news.
 | 2026-06-15 | AgentOS — AI Agent Orchestration & Governance Platform | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-15-agentos](./2026-06-15-agentos) |
 | 2026-06-17 | AgentIAM — AI Agent Identity & Access Management | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-17-agentiam](./2026-06-17-agentiam) |
 | 2026-06-18 | Agent Royale — Competitive AI Agent Benchmarking Platform | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-18-agent-royale](./2026-06-18-agent-royale) |
+| 2026-06-19 | MCP Shield — Security Audit, Policy Enforcement & Compliance for MCP | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-19-mcp-shield](./2026-06-19-mcp-shield) |
