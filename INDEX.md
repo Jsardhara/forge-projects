@@ -29,3 +29,4 @@ One project per day, autonomously generated from world news.
 | 2026-06-18 | Agent Royale — Competitive AI Agent Benchmarking Platform | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-18-agent-royale](./2026-06-18-agent-royale) |
 | 2026-06-19 | MCP Shield — Security Audit, Policy Enforcement & Compliance for MCP | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-19-mcp-shield](./2026-06-19-mcp-shield) |
 | 2026-06-20 | EduGate — AI Access Gateway for Schools (Age-Gated Policies, Teacher Oversight, Norway 2026 Compliance) | [Reuters](https://www.reuters.com/technology/norway-imposes-near-ban-ai-elementary-school-2026-06-19/) | [2026-06-20-edugate](./2026-06-20-edugate) |
+| 2026-06-21 | ModelRouter — GLM-5.2 OpenAI-Compatible Gateway with Fallback, Health Checks & Cost Tracking | [Lens Intel](C:/Users/jyot2/jarvis/state/lens-daily-intel.md) | [2026-06-21-model-router](./2026-06-21-model-router) |
