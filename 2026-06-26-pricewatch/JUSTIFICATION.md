@@ -1,0 +1,3 @@
+# Project Justification: PriceWatch
+
+LLM API pricing changes weekly — OpenAI dropped GPT-4o 50%, Anthropic introduced Haiku at 1/10th Sonnet's cost, Google slashed Gemini prices. Teams that don't track these shifts literally waste 2-10x on inference. Existing tools (`llm-pricing` on PyPI) only snapshot current prices; none detect changes, track trends, or alert on price drops. PriceWatch fills this gap: a price intelligence monitor that compares providers, flags price wars, and ranks models by cost-efficiency so teams route to the cheapest capable model. User: any team running >$100/mo in LLM API spend. Success: detects a real price change within 24h of it happening, saving the team money on their next model routing decision.
