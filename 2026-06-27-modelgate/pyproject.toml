@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "modelgate"
+version = "0.1.0"
+description = "AI Model Access Governance — tiered permissions, audit trails, compliance reporting for government-vetted AI model access"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "rich>=13.0",
+]
+
+[project.scripts]
+modelgate = "modelgate.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/modelgate"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
