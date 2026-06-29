@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "zkage-verify"
+version = "0.1.0"
+description = "Privacy-preserving age verification with zero-knowledge proof primitives"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Forge" }]
+dependencies = []
+
+[project.scripts]
+zkage-verify = "zkage_verify.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zkage_verify"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
