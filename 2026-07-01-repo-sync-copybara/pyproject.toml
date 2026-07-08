@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "copysync"
+version = "0.1.0"
+description = "Lightweight wrapper for Google Copybara to sync Git repos"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "Jarmes Team", email = "dev@jarmes.io"}]
+classifiers = ["Programming Language :: Python :: 3"]
+
+[project.urls]
+Homepage = "https://github.com/Jsardhara/forge-projects"
+
+[project.scripts]
+copysync = "copysync.__main__:main"
