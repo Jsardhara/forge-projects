@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "breach-sentinel"
+version = "0.1.0"
+description = "Open-source breach exposure monitoring: scan HIBP/local breach sources, score exposure severity, emit alerts. All-stdlib."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["breach", "security", "privacy", "monitoring", "hibp", "exposure"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/breach_sentinel"]

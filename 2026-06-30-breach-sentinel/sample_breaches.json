@@ -1,0 +1,8 @@
+[
+  {"identity_value": "alice@example.com", "breach_type": "email", "breach_name": "Adobe 2013", "breach_date": "2013-10-04", "description": "Email + password hash leaked in Adobe breach"},
+  {"identity_value": "alice@example.com", "breach_type": "password", "breach_name": "Collection #1", "breach_date": "2019-01-01", "description": "Password found in credential dump"},
+  {"identity_value": "bob@corp.com", "breach_type": "email", "breach_name": "LinkedIn 2012", "breach_date": "2012-06-01"},
+  {"identity_value": "carol@bank.com", "breach_type": "ssn", "breach_name": "Nefos Puffpal 2026", "breach_date": "2026-06-29", "description": "Passport + SSN leaked from dispensary systems breach"},
+  {"identity_value": "carol@bank.com", "breach_type": "passport", "breach_name": "Nefos Puffpal 2026", "breach_date": "2026-06-29", "description": "Identity documents exposed"},
+  {"identity_value": "dave@shop.com", "breach_type": "phone", "breach_name": "Truecaller 2019", "breach_date": "2019-05-01"}
+]
