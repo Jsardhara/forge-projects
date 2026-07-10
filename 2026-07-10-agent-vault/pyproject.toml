@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentvault"
+version = "0.1.0"
+description = "Secret-scoped execution layer for AI agents: scoped/revocable/short-lived credentials, egress allowlist, and secret-access audit."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+agentvault = "agentvault.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentvault"]
