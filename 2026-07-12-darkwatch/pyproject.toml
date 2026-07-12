@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "darkwatch"
+version = "0.1.0"
+description = "Zero-dependency dark-pattern / consumer-protection compliance scanner for subscription and UX flows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["compliance", "dark-pattern", "dsa", "subscription", "ux", "regtech"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[project.scripts]
+darkwatch = "darkwatch.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/darkwatch"]
