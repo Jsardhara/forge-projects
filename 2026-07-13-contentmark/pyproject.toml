@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "contentmark"
+version = "0.1.0"
+description = "Transparent AI-content signal detector + provenance/labeling toolkit (zero deps)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["ai-content", "provenance", "watermark", "disclosure", "labeling"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/contentmark"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
