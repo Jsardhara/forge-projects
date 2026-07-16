@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tokenaudit"
+version = "0.1.0"
+description = "Coding-agent token-cost profiler & efficiency auditor. Diagnoses where tokens go (pre-read overhead, redundant file reads, telemetry bloat) in agent session transcripts and recommends savings."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tokenaudit"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
