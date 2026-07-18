@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "costrecon"
+version = "0.1.0"
+description = "Local AWS billing reconciliation: estimated-vs-actual variance + idle/over-provisioned resource detection (zero dependencies)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+costrecon = "costrecon.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/costrecon"]
