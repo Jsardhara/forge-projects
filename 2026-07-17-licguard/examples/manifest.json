@@ -1,0 +1,8 @@
+{
+  "models": [
+    {"model": "mistral-7b", "use": {"commercial": true}},
+    {"model": "llama-3.1-70b", "use": {"commercial": true, "monthly_active_users": 2000000000}},
+    {"model": "deepseek-r1", "use": {"commercial": true, "redistribute": true}},
+    {"model": "inkling", "use": {"commercial": true}}
+  ]
+}

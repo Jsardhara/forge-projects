@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "licguard"
+version = "0.1.0"
+description = "Offline ML/AI model license compliance checker for open-weight deployments"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+keywords = ["license", "compliance", "llm", "open-weight", "models", "aup"]
+authors = [{ name = "Forge / Jarmes" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Jsardhara/forge-projects"
+
+[project.scripts]
+licguard = "licguard.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/licguard"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
