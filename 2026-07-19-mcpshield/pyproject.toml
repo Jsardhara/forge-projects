@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcpshield"
+version = "0.1.0"
+description = "Secure MCP server health-check & sandbox policy engine — analyzes MCP server specs for tool, egress, secret, and transport risk before an agent trusts them."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+mcpshield = "mcpshield.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcpshield"]
