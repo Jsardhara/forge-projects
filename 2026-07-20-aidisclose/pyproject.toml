@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aidisclose"
+version = "0.1.0"
+description = "AI-disclosure compliance gap analyzer -- map an org's AI use to applicable disclosure mandates and surface compliance gaps."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["ai", "compliance", "disclosure", "regulation", "governance"]
+
+[project.scripts]
+aidisclose = "aidisclose.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aidisclose"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
