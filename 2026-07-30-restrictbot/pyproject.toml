@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "restrictbot"
+version = "0.1.0"
+description = "US Physical AI Trade Restriction Compliance Scanner — check product descriptions against restricted categories"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+
+[project.scripts]
+restrictbot = "restrictbot.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/restrictbot"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
