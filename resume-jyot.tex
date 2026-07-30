@@ -141,10 +141,10 @@
 \section{Technical Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
-          {\textbf{Jarmes} $-$ Autonomous Multi-Agent System $|$ \emph{Python, Hermes Agent, vLLM, MCP, FastAPI, Docker}}{2025 -- Present}
+          {\textbf{Jarmes} $-$ Autonomous Multi-Agent System $|$ \emph{Python, Hermes Agent, MCP, FastAPI, Docker, TypeScript}}{2025 -- Present}
           \resumeItemListStart
             \resumeItem{Architected an 8-agent autonomous system (Tempo, Scholar, Lens, Forge, Atlas, Sentinel, Vox, Jarmes) on the Hermes Agent framework, each with persistent memory, domain-specific reasoning, and a chief-of-staff orchestrator routing tasks via an event-driven message bus}
-            \resumeItem{Deployed a two-tier inference architecture using vLLM on dual-GPU (48GB VRAM): quantized 32B model for orchestration and per-agent LoRA adapters, enabling task-specific execution without inference interference}
+            \resumeItem{Built a self-hosted inference server architecture with quantized models running on local hardware, enabling task-specific agents with specialized system prompts and persistent memory injection}
             \resumeItem{Integrated multi-platform presence across Discord, Telegram, Gmail, and CalDAV with human-in-the-loop approval gates and real-time system observability through a FastAPI web dashboard}
             \resumeItem{Designed cron-based automation infrastructure with circuit-breaker reliability, self-healing heartbeat monitoring, and bootstrap-CI strategy verification for a paper-mode prediction market trading agent}
           \resumeItemListEnd
@@ -162,7 +162,7 @@
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
      \textbf{Languages}{: Python, C, TypeScript, Dart (Flutter), HTML/CSS, Bash} \\
-     \textbf{AI \& Systems}{: Hermes Agent, MCP Protocol, LLM Orchestration, vLLM, CUDA, Autonomous Agents, Prompt Engineering} \\
+     \textbf{AI \& Systems}{: Hermes Agent, MCP Protocol, LLM Orchestration, Autonomous Agents, Prompt Engineering, Model Quantization} \\
      \textbf{Tools \& Platforms}{: Git, GitHub, FastAPI, Docker, REST APIs, Firebase, VS Code, Linux, BigFix, PyCharm} \\
      \textbf{Domains}{: Algorithmic trading, backtesting \& simulation, systems programming, technical documentation}
     }}
