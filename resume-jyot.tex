@@ -1,0 +1,171 @@
+%------------------------
+% Resume in LaTeX
+% Author : Jyot Sardhara
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{
+  \item\small{{#1 \vspace{-2pt}}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.25in, itemsep=0pt, parsep=0pt, topsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Jyot Sardhara} \\ \vspace{1pt}
+    \small 267-810-5877 $|$ \href{mailto:jbs359@drexel.edu}{\underline{jbs359@drexel.edu}} $|$ \href{https://github.com/Jsardhara}{\underline{GitHub}} $|$ \href{https://www.linkedin.com/in/jyot-sardhara/}{\underline{LinkedIn}}
+\end{center}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Drexel University}{Expected June 2029}
+      {Bachelor of Science in Computer Science}{Philadelphia, PA}
+      \resumeItemListStart
+        \resumeItem{GPA: 3.40/4.00 $|$ Tech Serv Club, Sigma Alpha Mu Fraternity, Every Nation Campus}
+        \resumeItem{\textbf{CS Coursework}: Data Structures \& Algorithms, Systems Programming (C), Discrete Math, Programming I--III}
+        \resumeItem{\textbf{Math/Finance}: Linear Algebra, Calculus I--III, Corporate Finance (FIN 301)}
+        \resumeItem{\textbf{Certifications}: Google AI Essentials}
+      \resumeItemListEnd
+    \resumeSubheading
+      {Berks Career and Technology Center}{Aug. 2021 -- June 2024}
+      {Certificate in IT Programming}{Reading, PA}
+      \resumeItemListStart
+        \resumeItem{GPA: 3.92/4.00 $|$ IC3 Digital Literacy Certified $|$ Treasurer, National Technical Honor Society}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {IT Support Specialist (Co-op)}{Mar. 2026 -- Present}
+      {University of Pennsylvania School of Nursing}{Philadelphia, PA}
+      \resumeItemListStart
+        \resumeItem{Deliver Tier 1 technical support for 1,500+ faculty, staff, and students across Windows, macOS, and mobile platforms}
+        \resumeItem{Deploy patches and manage device fleet with BigFix; troubleshoot GlobalProtect VPN and domain authentication GPOs}
+        \resumeItem{Troubleshoot Office 365, TCP/IP networking, remote access, and client imaging; create end-user documentation for university-wide systems}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Computer Science Intern}{June 2025 -- Sep. 2025}
+      {Dakdan Sports Media}{Philadelphia, PA}
+      \resumeItemListStart
+        \resumeItem{Improved site visibility through SEO keyword research, content optimization, and performance tracking}
+        \resumeItem{Contributed to FANZ website development using GitHub for version control and team collaboration}
+        \resumeItem{Optimized websites for speed, mobile responsiveness, and cross-browser compatibility}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {IT Intern}{Sep. 2023 -- Sep. 2024}
+      {Wilson IT Department}{Reading, PA}
+      \resumeItemListStart
+        \resumeItem{Provided technical support for Chromebooks, desktops, and printers; configured and deployed 300+ devices across school departments}
+        \resumeItem{Managed hardware inventory and imaged systems using Windows Deployment Services to ensure operational readiness}
+        \resumeItem{Shadowed IT professionals on network maintenance, Active Directory, and troubleshooting best practices}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Intern}{Sep. 2023 -- June 2024}
+      {O'Pake Institute at Alvernia University}{Reading, PA}
+      \resumeItemListStart
+        \resumeItem{Collaborated with clients to design and develop custom websites, translating business requirements into functional web solutions}
+        \resumeItem{Participated in full project lifecycle from requirements gathering through development and client presentation}
+        \resumeItem{Strengthened client communication and project management skills through iterative feedback cycles and milestone delivery}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Technical Projects}
+    \resumeSubHeadingListStart
+      \resumeProjectHeading
+          {\textbf{Jarmes} $-$ Autonomous Multi-Agent System $|$ \emph{Python, Hermes Agent, vLLM, MCP, FastAPI, Docker}}{2025 -- Present}
+          \resumeItemListStart
+            \resumeItem{Architected an 8-agent autonomous system (Tempo, Scholar, Lens, Forge, Atlas, Sentinel, Vox, Jarmes) on the Hermes Agent framework, each with persistent memory, domain-specific reasoning, and a chief-of-staff orchestrator routing tasks via an event-driven message bus}
+            \resumeItem{Deployed a two-tier inference architecture using vLLM on dual-GPU (48GB VRAM): quantized 32B model for orchestration and per-agent LoRA adapters, enabling task-specific execution without inference interference}
+            \resumeItem{Integrated multi-platform presence across Discord, Telegram, Gmail, and CalDAV with human-in-the-loop approval gates and real-time system observability through a FastAPI web dashboard}
+            \resumeItem{Designed cron-based automation infrastructure with circuit-breaker reliability, self-healing heartbeat monitoring, and bootstrap-CI strategy verification for a paper-mode prediction market trading agent}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Atlas} $-$ Prediction Market Strategy Engine $|$ \emph{Python, Kalshi API, RSA-PSS Auth, Backtesting}}{2026 -- Present}
+          \resumeItemListStart
+            \resumeItem{Building an evolutionary tournament that scores concurrent strategy variants on Kalshi event contracts using a fitness function weighted to discount short-run variance}
+            \resumeItem{Developed a local fill simulator that evaluates strategies against recorded market data rather than mid-price assumptions for realistic backtesting}
+            \resumeItem{Integrated the Kalshi API with RSA-PSS request signing; execution path is fully deterministic with model inference kept offline for verifiable audit trails}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+%-----------SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, C, TypeScript, Dart (Flutter), HTML/CSS, Bash} \\
+     \textbf{AI \& Systems}{: Hermes Agent, MCP Protocol, LLM Orchestration, vLLM, CUDA, Autonomous Agents, Prompt Engineering} \\
+     \textbf{Tools \& Platforms}{: Git, GitHub, FastAPI, Docker, REST APIs, Firebase, VS Code, Linux, BigFix, PyCharm} \\
+     \textbf{Domains}{: Algorithmic trading, backtesting \& simulation, systems programming, technical documentation}
+    }}
+ \end{itemize}
+
+\end{document}
