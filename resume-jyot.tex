@@ -1,11 +1,11 @@
-%-------------------------
+%------------------------
 % Resume in LaTeX
 % Author : Jyot Sardhara
 % Based off of: https://github.com/sb2nov/resume
 % License : MIT
 %------------------------
 
-\documentclass[letterpaper,11pt]{article}
+\documentclass[letterpaper,10pt]{article}
 
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
@@ -21,12 +21,11 @@
 \input{glyphtounicode}
 
 \pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
+\fancyhf{}
 \fancyfoot{}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
-% Adjust margins
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\evensidemargin}{-0.5in}
 \addtolength{\textwidth}{1in}
@@ -34,24 +33,18 @@
 \addtolength{\textheight}{1.0in}
 
 \urlstyle{same}
-
 \raggedbottom
 \raggedright
 \setlength{\tabcolsep}{0in}
 
-% Sections formatting
 \titleformat{\section}{
   \vspace{-4pt}\scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
 
-% Ensure PDF is ATS-friendly
 \pdfgentounicode=1
 
-% Custom commands
 \newcommand{\resumeItem}[1]{
-  \item\small{
-    {#1 \vspace{-2pt}}
-  }
+  \item\small{{#1 \vspace{-2pt}}}
 }
 
 \newcommand{\resumeSubheading}[4]{
@@ -71,11 +64,8 @@
 
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.25in, itemsep=0pt, parsep=0pt, topsep=0pt]}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
-
-%-------------------------------------------
-%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
@@ -92,17 +82,16 @@
       {Drexel University}{Expected June 2029}
       {Bachelor of Science in Computer Science}{Philadelphia, PA}
       \resumeItemListStart
-        \resumeItem{GPA: 3.35/4.00 }
-        \resumeItem{Member: Tech Serv Club, Every Nation Campus (ENC), Sigma Alpha Mu Fraternity}
-        \resumeItem{Coursework: CS 260 Data Structures, CS 270 Discrete Math, CS 283 Systems Programming (POSIX C), Linear Algebra, FIN 301}
-        \resumeItem{Certifications: Google AI Essentials, IC3 Digital Literacy Certified}
+        \resumeItem{GPA: 3.40/4.00 $|$ Member: Tech Serv Club, Sigma Alpha Mu Fraternity, Every Nation Campus}
+        \resumeItem{\textbf{CS Coursework}: Data Structures \& Algorithms, Systems Programming (C), Discrete Math, Programming I--III}
+        \resumeItem{\textbf{Math/Finance}: Linear Algebra, Calculus I--III, Corporate Finance (FIN 301)}
+        \resumeItem{\textbf{Certifications}: Google AI Essentials, IC3 Digital Literacy Certified}
       \resumeItemListEnd
     \resumeSubheading
       {Berks Career and Technology Center}{Aug. 2021 -- June 2024}
       {Certificate in IT Programming}{Reading, PA}
       \resumeItemListStart
-        \resumeItem{GPA: 3.92/4.00}
-        \resumeItem{Leadership: Treasurer, National Technical Honor Society; Active Member, SkillsUSA}
+        \resumeItem{GPA: 3.92/4.00 $|$ IC3 Digital Literacy Certified $|$ Treasurer, National Technical Honor Society}
       \resumeItemListEnd
   \resumeSubHeadingListEnd
 
@@ -111,12 +100,12 @@
   \resumeSubHeadingListStart
 
     \resumeSubheading
-      {IT Support Specialist (Co-op)}{March 2026 -- Present}
-      {University of Pennsylvania}{Philadelphia, PA}
+      {IT Support Specialist (Co-op)}{Mar. 2026 -- Present}
+      {University of Pennsylvania School of Nursing}{Philadelphia, PA}
       \resumeItemListStart
-        \resumeItem{Deliver Tier 1 technical support for 1,500+ faculty, staff, and students across Windows, macOS, and mobile platforms in an Ivy League environment}
-        \resumeItem{Configure and maintain classroom AV technology including Crestron systems, supporting hybrid learning across 50+ classrooms}
-        \resumeItem{Troubleshoot Office 365, TCP/IP networking, remote access, and client imaging; create end-user documentation for university-wide systems}
+        \resumeItem{Resolve faculty and staff support tickets in DeskPro across endpoint, classroom AV, and printing systems in an Ivy League environment}
+        \resumeItem{Deploy patches and manage device fleet with BigFix; troubleshoot GlobalProtect VPN and domain authentication GPOs}
+        \resumeItem{Automated remediation of a 1,000-page policy manual, scripting uniform page-number fields across 669 document sections and converting 151 static entries to dynamic cross-references}
       \resumeItemListEnd
 
     \resumeSubheading
@@ -125,15 +114,15 @@
       \resumeItemListStart
         \resumeItem{Improved site visibility through SEO keyword research, content optimization, and performance tracking}
         \resumeItem{Contributed to FANZ website development using GitHub for version control and team collaboration}
-        \resumeItem{Optimized websites for speed, mobile responsiveness, and cross-browser compatibility}
+        \resumeItem{Optimized websites for speed, mobile responsiveness, and cross-browser compatibility to enhance user experience}
       \resumeItemListEnd
 
     \resumeSubheading
       {IT Intern}{Sep. 2023 -- Sep. 2024}
       {Wilson IT Department}{Reading, PA}
       \resumeItemListStart
-        \resumeItem{Provided technical support for Chromebooks, desktops, and printers; configured and deployed 200+ devices across departments}
-        \resumeItem{Shadowed IT professionals on network maintenance, troubleshooting, and best practices in a school district environment}
+        \resumeItem{Provided technical support for Chromebooks, desktops, and printers; configured and deployed 200+ devices across school departments}
+        \resumeItem{Shadowed IT professionals on network maintenance and best practices in a district-wide environment}
       \resumeItemListEnd
 
     \resumeSubheading
@@ -149,23 +138,30 @@
 \section{Technical Projects}
     \resumeSubHeadingListStart
       \resumeProjectHeading
-          {\textbf{JARMES: Autonomous Multi-Agent System} $|$ \emph{Python, Hermes Agent, MCP, FastAPI, TypeScript, Docker}}{Jan. 2026 -- Present}
+          {\textbf{Jarmes} $-$ Autonomous Multi-Agent System $|$ \emph{Python, Hermes Agent, MCP, FastAPI, Docker}}{2025 -- Present}
           \resumeItemListStart
-            \resumeItem{Architected an 8-agent autonomous system (Tempo, Scholar, Lens, Forge, Atlas, Sentinel, Vox, Jarmes) on the Hermes Agent framework, each with persistent memory and domain-specific reasoning}
-            \resumeItem{Designed an event-driven message bus for inter-agent communication, cron-based automation with circuit-breaker reliability, and self-healing heartbeat monitoring across all agents}
-            \resumeItem{Integrated multi-platform presence (Discord, Telegram, Gmail, CalDAV, Teams) and built a real-time web dashboard with FastAPI backend for system observability}
-            \resumeItem{Deployed a paper-mode prediction market trading agent (Atlas) on Kalshi with adaptive strategy optimization using bootstrap confidence interval verification}
+            \resumeItem{Architected an 8-agent autonomous system with persistent memory and domain-specific reasoning, coordinated by a chief-of-staff orchestrator with event-driven inter-agent message bus}
+            \resumeItem{Built a two-tier inference architecture using vLLM on dual-GPU (48GB VRAM): quantized 32B model for orchestration and per-agent LoRA adapters for specialized execution}
+            \resumeItem{Integrated multi-platform presence (Discord, Telegram, Gmail, CalDAV) with human-in-the-loop approval gates and a real-time FastAPI dashboard for system observability}
+            \resumeItem{Designed cron-based automation with circuit-breaker reliability, heartbeat self-healing, and bootstrap-CI strategy verification for a paper-mode trading agent}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Atlas} $-$ Prediction Market Strategy Engine $|$ \emph{Python, REST APIs, RSA-PSS Auth, Kalshi}}{2026 -- Present}
+          \resumeItemListStart
+            \resumeItem{Designing an evolutionary tournament that scores concurrent strategy variants on Kalshi event contracts using a fitness function weighted to discount short-run variance}
+            \resumeItem{Built a local fill simulator so strategies are evaluated against recorded market data rather than mid-price assumptions}
+            \resumeItem{Integrated the Kalshi API with RSA-PSS request signing; execution path is deterministic code with model inference kept offline}
           \resumeItemListEnd
     \resumeSubHeadingListEnd
 
 %-----------SKILLS-----------
-\section{Skills}
+\section{Technical Skills}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Languages}{: Python, C, TypeScript, Dart (Flutter), HTML/CSS} \\
-     \textbf{AI \& Systems}{: Hermes Agent, MCP Protocol, LLM Orchestration, Autonomous Agents, Prompt Engineering, REST APIs} \\
-     \textbf{Developer Tools}{: Git, GitHub, FastAPI, Next.js, Docker, Firebase, VS Code} \\
-     \textbf{Platforms}{: Windows, macOS, Linux, Office 365, SharePoint}
+     \textbf{Languages}{: Python, C, TypeScript, Dart (Flutter), HTML/CSS, Bash} \\
+     \textbf{AI \& Systems}{: Hermes Agent, MCP Protocol, LLM Orchestration, vLLM, CUDA, Autonomous Agents, Prompt Engineering} \\
+     \textbf{Tools \& Platforms}{: Git, GitHub, FastAPI, Docker, REST APIs, Firebase, VS Code, Linux, BigFix, PyCharm} \\
+     \textbf{Domains}{: Algorithmic trading, backtesting \& simulation, systems programming, technical documentation}
     }}
  \end{itemize}
 
