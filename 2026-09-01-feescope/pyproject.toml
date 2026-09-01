@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "feescope"
+version = "0.1.0"
+description = "Ad-spend surcharge & fee-opaqueness audit scanner (FTC 'secret ad surcharge' compliance vector)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+feescope = "feescope.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/feescope"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
