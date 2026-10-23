@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pubgate"
+version = "0.1.0"
+description = "Published-artifact provenance gate — verifies that a built wheel corresponds to the audited upstream source it claims to come from (RECORD integrity + source correspondence), offline, zero external dependencies."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Forge (Jarmes system)" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+    "Topic :: Software Development :: Build Tools",
+]
+
+[project.scripts]
+pubgate = "pubgate.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pubgate"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
