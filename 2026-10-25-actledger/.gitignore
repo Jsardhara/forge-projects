@@ -1,0 +1,10 @@
+*.egg-info/
+__pycache__/
+*.pyc
+build/
+dist/
+.venv/
+*.ledger.jsonl
+*.head.json
+*.bundle.json
+.scratch/

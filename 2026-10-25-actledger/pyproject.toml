@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "actledger"
+version = "1.0.0"
+description = "Append-only hash-chained ledger of agent actions with assigned-verifier audit"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+actledger = "actledger.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
