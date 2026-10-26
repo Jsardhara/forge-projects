@@ -1,0 +1,64 @@
+{
+  "rule_version": 1,
+  "advisory": {
+    "id": "CVE-2026-111497",
+    "aliases": ["GHSA-9v8h-qqgm-4m35", "PYSEC-2026-4322", "PYSEC-2026-4323", "Broccoli2Shell", "Node2Shell"],
+    "url": "https://broccoli2shell.com/",
+    "summary": "Out-of-bounds write in Google's reference Brotli C decoder; reachable from Node.js' bundled copy, Python Brotli/brotlicffi wheels, and anything linking libbrotli.",
+    "disclosed": "2026-10-22",
+    "severity": "9.2 Critical (CVSS 4.0, GitHub)"
+  },
+  "products": [
+    {
+      "id": "node",
+      "ecosystem": "node",
+      "package": "node",
+      "kind": "runtime_lines",
+      "lines": {
+        "22": "22.23.4",
+        "24": "24.22.1",
+        "26": "26.12.1"
+      },
+      "eol_note": "Lines 25, 23, 20 and older are end-of-life with no fix published: move to 22, 24 or 26.",
+      "note": "Node.js bundles its own Brotli decoder, so the system libbrotli version is irrelevant to this runtime. Express and body-parser are only paths to it; upgrading them does not help."
+    },
+    {
+      "id": "python-brotli",
+      "ecosystem": "python",
+      "package": "Brotli",
+      "kind": "range",
+      "affected": [{"min": "1.0.3", "max": "1.2.0"}],
+      "fixed": ["1.0.10", "1.1.1", "1.2.1"],
+      "note": "PyPI Brotli links the C decoder. pip-audit, Dependabot and Safety did not reliably flag the affected versions at disclosure."
+    },
+    {
+      "id": "python-brotlicffi",
+      "ecosystem": "python",
+      "package": "brotlicffi",
+      "kind": "range",
+      "affected": [{"min": "1.0.3", "max_exclusive": "1.2.1.0"}],
+      "fixed": ["1.2.1.0"],
+      "note": "brotlicffi wraps the same C decoder; it is pulled in transitively by urllib3/requests/aiohttp/httpx."
+    },
+    {
+      "id": "system-brotli",
+      "ecosystem": "system",
+      "package": "libbrotli1",
+      "packages": ["libbrotli1", "libbrotlidec1", "libbrotli-dev", "brotli"],
+      "kind": "range",
+      "affected": [{"min": "1.0.3", "max_exclusive": "1.2.1"}],
+      "fixed": ["1.0.10", "1.1.1", "1.2.1"],
+      "note": "Dynamically linked programs are fixed once the distribution ships a patched package and the process restarts. Statically linked or vendored copies need their own rebuild."
+    },
+    {
+      "id": "vendored-brotli",
+      "ecosystem": "vendored",
+      "package": "brotli",
+      "packages": ["brotli"],
+      "kind": "range",
+      "affected": [{"min": "1.0.3", "max_exclusive": "1.2.1"}],
+      "fixed": ["1.0.10", "1.1.1", "1.2.1"],
+      "note": "A vendored copy is not covered by distribution updates. Patched copies include the BLOCK_SWITCH error code (-17) in brotli/decode.h; a copy without it predates the fix."
+    }
+  ]
+}
