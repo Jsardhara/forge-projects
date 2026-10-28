@@ -6,13 +6,13 @@ file say so?**
 `tsattest` answers three questions about the local Tailscale node, read-only and offline:
 
 1. **Which security bulletins apply to this node?** - not "is it behind latest", but
-   per-bulletin applicability against the features actually in use here (SSH on? serve
-   configured? unix backend? how many mounts? TLS?).
+  per-bulletin applicability against the features actually in use here (SSH on? serve
+  configured? unix backend? how many mounts? TLS?).
 2. **Is Tailscale SSH on?** - decided from `tailscale debug prefs` -> `RunSSH`, never from
-   `tailscale status --json` -> `Self.SSH_HostKeys`.
+  `tailscale status --json` -> `Self.SSH_HostKeys`.
 3. **Is `TS_SSH_DISABLE_FORWARDING` loaded in the *running* process?** - with the three
-   answers kept apart: **declared** (in `/etc/default/tailscaled`), **actual** (in
-   `/proc/<pid>/environ`), **unmeasurable** (root-only read refused).
+  answers kept apart: **declared** (in `/etc/default/tailscaled`), **actual** (in
+  `/proc/<pid>/environ`), **unmeasurable** (root-only read refused).
 
 ## Why the second question exists
 
@@ -20,9 +20,9 @@ On the machine this was written on, in the same minute:
 
 ```
 $ tailscale status --json | jq .Self.SSH_HostKeys
-null                       # reads as "Tailscale SSH is off"
+null            # reads as "Tailscale SSH is off"
 $ tailscale debug prefs | jq .RunSSH
-true                       # SSH is on
+true            # SSH is on
 ```
 
 Two vendor-blessed surfaces, opposite answers, and the naive read is a **false negative
@@ -41,9 +41,9 @@ value that was actually read.
 
 ```
 cd 2026-10-28-tsattest
-PYTHONPATH=src python3 -m tsattest              # prose report
-PYTHONPATH=src python3 -m tsattest --json       # machine-readable
-sudo PYTHONPATH=src python3 -m tsattest         # measures the process env too
+PYTHONPATH=src python3 -m tsattest       # prose report
+PYTHONPATH=src python3 -m tsattest --json    # machine-readable
+sudo PYTHONPATH=src python3 -m tsattest     # measures the process env too
 ```
 
 Exit codes (fail-closed, same contract as `kvpreflight`):
