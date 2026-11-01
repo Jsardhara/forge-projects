@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-01T06:26:00Z",
+  "stale_after_days": 7,
+  "notes": [
+    "Every row is read from a primary source and carries that row's own source_url and retrieved_at.",
+    "A row whose retrieved_at is older than stale_after_days is reported as STALE by kcheck; it is never silently reused as if fresh.",
+    "Only verified distro rows are present. A distro with no row is UNMEASURABLE (exit 2), never 'patched'.",
+    "fix_state: pending = the vendor confirms the range and has not released a fix yet; released = fixed_version exists and is comparable; not_affected = the vendor marks the release unaffected.",
+    "No network, no feed client: updating this file is a deliberate, dated act."
+  ],
+  "cves": [
+    {
+      "cve": "CVE-2026-98432",
+      "title": "Linux IPv4 TCP use-after-free on the MPTCP path (remote, unauthenticated)",
+      "cvss": 9.8,
+      "cvss_vector": "AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+      "published": "2026-10-15",
+      "nvd_status": "Received",
+      "introduced": "4.4",
+      "kev": false,
+      "exploited_in_wild": false,
+      "fixed_branches": {
+        "5.10": "5.10.272",
+        "5.15": "5.15.223",
+        "6.1": "6.1.190",
+        "6.6": "6.6.159",
+        "6.12": "6.12.113",
+        "6.18": "6.18.56",
+        "7.2": "7.2.10",
+        "7.3": "7.3"
+      },
+      "attack_path": {
+        "label": "MPTCP listener reachable from a remote peer (PoC reached root with no credentials)",
+        "probe": "ss -Mln + sysctl net.mptcp.enabled"
+      },
+      "mitigation": {
+        "summary": "operator-side only: an nftables u32 rule dropping TCP segments with header options, or disabling net.mptcp.enabled in /etc/sysctl.d; neither fixes the kernel and both last until reboot",
+        "pointer": "/home/jyot/.hermes/profiles/lens/outputs/lens-daily-intel.md (AMENDMENT, 06:26Z section)",
+        "automated": false,
+        "sources": {
+          "almalinux": "https://almalinux.org/blog/2026-10-30-cve-2026-98432/",
+          "redhat": "https://access.redhat.com/security/vulnerabilities/RHSB-2026-016"
+        }
+      },
+      "sources": {
+        "nvd": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2026-98432",
+        "advisory": "https://atlasum.net/blog/cve-2026-98432-linux-ipv4-tcp-uaf"
+      },
+      "distros": {
+        "ubuntu-26.04": {
+          "distro": "ubuntu",
+          "release": "26.04",
+          "codename": "resolute",
+          "fix_state": "pending",
+          "fixed_version": "7.0.0-43.43",
+          "status_text": "26.04 LTS resolute | Vulnerable | work in progress in 7.0.0-43.43",
+          "note": "The tracker names 7.0.0-43.43 as the target and marks it work in progress; that version is NOT released, so there is nothing to compare against and the host cannot be patched yet.",
+          "source_url": "https://ubuntu.com/security/CVE-2026-98432",
+          "retrieved_at": "2026-11-01T06:26:00Z"
+        }
+      }
+    }
+  ]
+}

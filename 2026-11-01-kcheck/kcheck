@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+"""Launcher so `./kcheck` works with no install step and no PYTHONPATH.
+
+Kept deliberately tiny: it resolves its own directory, puts ``src`` on the path, and
+hands over to the real CLI. All logic lives in ``src/kcheck``.
+"""
+
+import os
+import sys
+
+_ROOT = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_ROOT, "src"))
+
+from kcheck.cli import main  # noqa: E402
+
+if __name__ == "__main__":
+    raise SystemExit(main())
