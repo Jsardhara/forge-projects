@@ -17,6 +17,14 @@ from .audit import FAIL_ON_ORDER, audit
 from .chain import GENESIS_HASH, sha256_hex
 from .export import ExportError, build_bundle, read_bundle, verify_bundle, write_bundle
 from .ledger import Ledger, LedgerError
+from .manifest import (
+    BindingError,
+    ManifestError,
+    append_binding,
+    bare_hex,
+    derive,
+    load_bindings,
+)
 from .models import ActionRecord
 
 
@@ -45,6 +53,11 @@ def _parser() -> _Parser:
     record.add_argument("--ts", default="")
     record.add_argument("--model", default="", dest="model_id")
     record.add_argument("--model-digest", default="")
+    record.add_argument(
+        "--model-manifest",
+        default="",
+        help="a wsaudit manifest; its digest is recomputed here and recorded as measured",
+    )
     record.add_argument("--policy", default="", dest="policy_version")
     record.add_argument("--args-text", default="", help="raw arguments; stored as a hash")
     record.add_argument("--data", action="append", default=[], help="path or dataset touched")
@@ -75,6 +88,13 @@ def _parser() -> _Parser:
     tail.add_argument("--ledger", required=True)
     tail.add_argument("-n", type=int, default=5)
 
+    binding = sub.add_parser(
+        "verify-binding", help="which actions in this ledger ran on these exact weights"
+    )
+    binding.add_argument("--ledger", required=True)
+    binding.add_argument("--manifest", required=True)
+    binding.add_argument("--json", action="store_true")
+
     return parser
 
 
@@ -99,15 +119,42 @@ def _report_verification(result) -> int:
     return 1
 
 
+def _resolve_digest(args):
+    """The digest to record, and the manifest it was derived from (None if typed).
+
+    Fail-closed: a manifest that does not agree with an explicitly supplied
+    `--model-digest` is a usage error, and nothing is written. Preferring one silently
+    is how a transcribed digest launders itself into a measured-looking record.
+    """
+    if not args.model_manifest:
+        return args.model_digest, None
+
+    if not args.model_id.strip():
+        raise _UsageError(
+            "actledger record: error: --model-manifest requires --model - a measured "
+            "digest that names no model cannot be tied to an action"
+        )
+    derived = derive(args.model_manifest)
+    supplied = args.model_digest.strip()
+    if supplied and bare_hex(supplied) != derived.digest:
+        raise _UsageError(
+            "actledger record: error: --model-digest %s and manifest %s disagree "
+            "(manifest digest %s) - nothing recorded"
+            % (supplied[:20], args.model_manifest, derived.digest[:20])
+        )
+    return derived.tagged, derived
+
+
 def _cmd_record(args) -> int:
     args_hash = sha256_hex(args.args_text) if args.args_text else ""
+    model_digest, derived = _resolve_digest(args)
     record = ActionRecord(
         agent_id=args.agent,
         tool=args.tool,
         outcome=args.outcome,
         ts=args.ts or _now(),
         model_id=args.model_id,
-        model_digest=args.model_digest,
+        model_digest=model_digest,
         policy_version=args.policy_version,
         args_hash=args_hash,
         data_touched=tuple(args.data),
@@ -115,7 +162,10 @@ def _cmd_record(args) -> int:
         approved_by=args.approved_by,
         approved_at=args.approved_at,
     )
+    ts = record.ts
     entry = Ledger(args.ledger).append(record)
+    if derived is not None:
+        append_binding(args.ledger, entry.seq, derived, args.model_manifest, ts)
     print("recorded seq %d %s" % (entry.seq, entry.hash[:16]))
     return 0
 
@@ -129,7 +179,8 @@ def _cmd_verify(args) -> int:
 
 
 def _cmd_audit(args) -> int:
-    report = audit(Ledger(args.ledger).entries())
+    bindings = load_bindings(args.ledger)
+    report = audit(Ledger(args.ledger).entries(), bindings)
     code = 0 if report.acceptable(args.fail_on) else 1
     if args.json:
         print(json.dumps(report.to_dict(), sort_keys=True))
@@ -178,6 +229,41 @@ def _cmd_tail(args) -> int:
     return 0
 
 
+def _cmd_verify_binding(args) -> int:
+    """Which recorded actions ran on exactly these weights?
+
+    Exit 0 = at least one action is bound to this manifest's digest, 1 = none is,
+    2 = could not measure. It answers the auditor's question in the other direction from
+    `audit`: not "is this row measured" but "what was done with these weights".
+    """
+    derived = derive(args.manifest)
+    entries = Ledger(args.ledger).entries()
+    bound = [entry for entry in entries if bare_hex(entry.record.model_digest) == derived.digest]
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "model_digest": derived.tagged,
+                    "manifest": os.path.abspath(args.manifest),
+                    "tensor_count": derived.tensor_count,
+                    "format": derived.format,
+                    "scanned": len(entries),
+                    "bound": len(bound),
+                    "seqs": [entry.seq for entry in bound],
+                },
+                sort_keys=True,
+            )
+        )
+    else:
+        print(
+            "%d action(s) in %s are bound to %s (%d tensor(s), %s)"
+            % (len(bound), args.ledger, derived.tagged[:20], derived.tensor_count, derived.format)
+        )
+        for entry in bound:
+            print("  seq=%d %s %s" % (entry.seq, entry.record.agent_id, entry.record.tool))
+    return 0 if bound else 1
+
+
 HANDLERS = {
     "record": _cmd_record,
     "verify": _cmd_verify,
@@ -185,6 +271,7 @@ HANDLERS = {
     "export": _cmd_export,
     "verify-bundle": _cmd_verify_bundle,
     "tail": _cmd_tail,
+    "verify-binding": _cmd_verify_binding,
 }
 
 
@@ -197,7 +284,10 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     try:
         return HANDLERS[args.command](args)
-    except (LedgerError, ExportError, OSError) as exc:
+    except _UsageError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+    except (LedgerError, ExportError, ManifestError, BindingError, OSError) as exc:
         print("error: %s" % exc, file=sys.stderr)
         return 2
 

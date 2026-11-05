@@ -109,12 +109,25 @@ class TestAudit(CliTestCase):
         self.record(
             verifier="sentinel",
             model="deepseek/deepseek-v4.1",
-            model_digest="sha256:x",
+            model_manifest=os.path.join(
+                os.path.dirname(__file__), "data", "minilm.manifest.json"
+            ),
             policy="p1",
         )
         code, out, _ = run(["audit", "--ledger", self.ledger, "--fail-on", "warn"])
         self.assertEqual(code, 0)
         self.assertIn("PASS", out)
+
+    def test_a_typed_digest_no_longer_passes_fail_on_warn(self):
+        self.record(
+            verifier="sentinel",
+            model="deepseek/deepseek-v4.1",
+            model_digest="sha256:x",
+            policy="p1",
+        )
+        code, out, _ = run(["audit", "--ledger", self.ledger, "--fail-on", "warn"])
+        self.assertEqual(code, 1)
+        self.assertIn("AAL-007", out)
 
     def test_json_audit_reports_counts(self):
         self.record()

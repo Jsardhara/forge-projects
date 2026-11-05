@@ -127,9 +127,63 @@ flag, and one flag is never diluted by a pile of passes.
 | `AAL-004` | WARN | action cannot be tied to a model id + weights digest |
 | `AAL-005` | WARN | action carries no policy version |
 | `AAL-006` | PASS | every action names an assigned verifier |
+| `AAL-007` | WARN | a digest is declared but **no tool measured it** — `MODEL-DIGEST-UNMEASURED` |
 
 Chain break codes: `PARSE-ERROR`, `SEQ-GAP`, `PREV-MISMATCH`, `HASH-MISMATCH`,
 `HEAD-MISMATCH`, and in bundles `FORMAT-MISMATCH`, `COUNT-MISMATCH`.
+
+## Binding a *measured* weights digest (2026-11-05)
+
+`--model-digest` is a string you type, and `audit` used to accept any non-empty one. That
+made the ledger's model-identity axis unfalsifiable: `abcdef` passed exactly as well as
+the digest of the wrong model. The measurement side already exists in this repo —
+`wsaudit` (2026-11-04) hashes the weights themselves. This is the other half:
+
+```sh
+# 1. measure the weights (wsaudit, 2026-11-04)
+cd ../2026-11-04-wsaudit
+PYTHONPATH=src python3 -m wsaudit hash /models/model.safetensors \
+  --manifest-out /tmp/model.manifest.json
+
+# 2. record with the manifest, not with a typed string
+cd ../2026-10-25-actledger
+PYTHONPATH=src python3 -m actledger record --ledger actions.jsonl \
+  --agent forge --tool model.run --outcome ok --verifier sentinel --policy pol-7 \
+  --model cross-encoder/ms-marco-MiniLM-L-6-v2 \
+  --model-manifest /tmp/model.manifest.json
+```
+
+What `--model-manifest` does, in order, before anything is written:
+
+1. shape-checks the manifest (tool, format, 64-hex digests, integer shapes);
+2. **recomputes** the canonical digest from the manifest's own tensor list — the value in
+   the record is derived here, not copied;
+3. refuses a manifest that disagrees with itself, is header-only (`partial`), or declares
+   no tensors;
+4. refuses to record at all if a `--model-digest` was also supplied and it disagrees —
+   exit `2`, nothing written. Preferring one silently is how a transcription launders
+   itself into a measured-looking row.
+
+The digest is stored as `ws1:<sha256>`, and one line per bound record is appended to
+`<ledger>.manifests.jsonl`. It lives beside the ledger rather than inside it because the
+record's field set is hashed into the chain — a new key would invalidate every ledger
+written before today.
+
+`audit` reads that file. A row is *measured* only when a binding line names the same
+digest for that sequence number; the `ws1:` prefix alone proves nothing, because anyone
+can type it. Everything else becomes `AAL-007 MODEL-DIGEST-UNMEASURED`.
+
+The auditor's other direction — *what ran on these weights?*:
+
+```sh
+PYTHONPATH=src python3 -m actledger verify-binding \
+  --ledger actions.jsonl --manifest /tmp/model.manifest.json [--json]
+```
+
+Exit `0` = at least one action is bound to this manifest's digest, `1` = none is,
+`2` = could not measure. The two tools divide the work: `wsaudit hash <file> --manifest
+<M>` proves the bytes on disk still match the manifest (exit `1` on a substituted
+weight); `actledger` proves which actions are bound to that manifest.
 
 ## Measured on real data, not fixtures
 
@@ -154,7 +208,9 @@ containing only the bundle.
 PYTHONPATH=src python3 -m unittest discover -s tests
 ```
 
-101 tests, no third-party test runner required.
+153 tests, no third-party test runner required. `tests/data/minilm.manifest.json` is a
+manifest produced by `wsaudit` over a real 90 MB safetensors file, so the digest
+reimplementation in `manifest.py` is checked against wsaudit's own output on every run.
 
 ## Layout
 
@@ -164,9 +220,10 @@ src/actledger/
   chain.py     canonical JSON, hashing, chain verification
   ledger.py    file-backed append-only ledger + committed head
   audit.py     responsibility report (the differentiator)
+  manifest.py  wsaudit manifest -> recomputed digest -> binding sidecar
   export.py    self-contained bundles
   sources.py   adapters from an existing runtime's own records
-  cli.py       record / verify / audit / export / verify-bundle / tail
+  cli.py       record / verify / audit / export / verify-bundle / tail / verify-binding
 scripts/from_hermes_kanban.py
 tests/
 ```

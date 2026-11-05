@@ -64,3 +64,50 @@ A zero-dependency (stdlib only) CLI that:
 - **audits responsibility** — the differentiator that answers eMudhra directly: counts
   actions with no named verifier, self-verified actions, and consequential actions with no
   recorded approval, with a fail-closed exit code for CI.
+
+---
+
+# 2026-11-05 — second justification: the weights-digest field was unfalsifiable
+
+## The problem
+
+`ActionRecord.model_digest` was a string the caller typed, and `audit` could only ask
+whether it was non-empty. Measured in the code, not asserted: `cli.py` took
+`--model-digest` as free-form input, `audit.py` tested `record.model_digest.strip()`, and
+the batch adapter in `sources.py` wrote `""`. So `abcdef` produced the same audit verdict
+as a real digest of the wrong model. The ledger's entire model-identity axis — the field a
+compliance reviewer reaches for first — was a transcription with no way to be wrong.
+
+The measurement half now exists: `wsaudit` (this repo, 2026-11-04) hashes weights per
+tensor and emits a canonical model digest, and `grep -rl wsaudit` across the repo returned
+exactly one hit — `INDEX.md`. The instrument and the record were not wired together, which
+is exactly the class of gap this ledger exists to expose, sitting inside the ledger.
+
+## Who the user is
+
+The same two people as above, at the moment they are handed a ledger row and asked "was
+this the model you think it was?". Today the honest answer is "the row says so". After this
+change the answer is one of: a digest recomputed from a manifest of N named tensors, or an
+explicit `AAL-007` saying nobody measured it.
+
+## Why existing solutions are inadequate
+
+- **A digest column in a log** is what this replaces: it records what someone typed.
+- **`wsaudit` alone** proves the bytes on disk match a manifest. It cannot say which
+  actions ran on those weights.
+- **Model signing** (`model-signing`, sigstore-style) proves a publisher signed an
+  artifact; it needs a vendor key and a network, and it says nothing about a runtime row.
+- **Anthropic's provable-inference work and `anthropics/FlashProve`** (845 stars,
+  "Not maintained") prove properties of the *computation*. A digest proves *which bytes
+  ran*. Neither substitutes for the other, and a research prototype is not a dependency.
+
+## What this change is
+
+`record --model-manifest` recomputes the canonical digest from the manifest's own tensor
+list (the value is derived in-process, never copied), refuses a manifest that is
+header-only, self-inconsistent or empty, and refuses to record at all when a supplied
+`--model-digest` disagrees — exit 2, nothing written. One binding line per bound record is
+appended beside the ledger (`<ledger>.manifests.jsonl`), and `audit` treats a digest as
+measured only when that line names the same value — the `ws1:` tag alone is not evidence,
+because anyone can type it. `verify-binding` answers the auditor's reverse question: which
+actions in this ledger ran on these exact weights.

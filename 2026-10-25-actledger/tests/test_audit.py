@@ -2,7 +2,10 @@ import unittest
 
 from actledger.audit import audit, is_consequential
 from actledger.chain import GENESIS_HASH, make_entry
+from actledger.manifest import DIGEST_TAG
 from actledger.models import ActionRecord, SEVERITY_RANK, Severity
+
+MEASURED = DIGEST_TAG + "a" * 64
 
 
 def entry(seq, **kw):
@@ -10,7 +13,7 @@ def entry(seq, **kw):
     kw.setdefault("outcome", "ok")
     kw.setdefault("verifier", "sentinel")
     kw.setdefault("model_id", "deepseek/deepseek-v4.1")
-    kw.setdefault("model_digest", "sha256:abc123")
+    kw.setdefault("model_digest", MEASURED)
     kw.setdefault("policy_version", "pol-1")
     record = ActionRecord(agent_id=kw.pop("agent_id", "forge"), **kw)
     return make_entry(seq, GENESIS_HASH if seq == 0 else "f" * 64, record)
@@ -80,8 +83,21 @@ class TestAuditFindings(unittest.TestCase):
         self.assertEqual(warns_only.severity, Severity.WARN)
 
     def test_clean_ledger_is_pass(self):
-        report = audit([entry(0), entry(1)])
+        entries = [entry(0), entry(1)]
+        bindings = {item.seq: MEASURED for item in entries}
+        report = audit(entries, bindings)
         self.assertEqual(report.severity, Severity.PASS)
+
+    def test_a_typed_digest_is_not_a_measured_one(self):
+        # The pre-2026-11-05 behaviour was PASS here: any non-empty string counted.
+        # A free-form digest is a transcription, so it is reported, not accepted.
+        report = audit([entry(0, model_digest="sha256:abc123")])
+        self.assertIn("AAL-007", codes(report))
+        self.assertEqual(report.severity, Severity.WARN)
+
+    def test_a_tag_without_a_binding_is_still_unmeasured(self):
+        report = audit([entry(0)])  # tagged digest, no bindings passed
+        self.assertIn("AAL-007", codes(report))
 
     def test_empty_ledger_is_pass_and_reports_zero(self):
         report = audit([])

@@ -7,8 +7,9 @@ then reports the worst single finding as the verdict.
 """
 
 from dataclasses import dataclass
-from typing import Sequence, Tuple
+from typing import Mapping, Optional, Sequence, Tuple
 
+from .manifest import is_tagged
 from .models import SEVERITY_RANK, ActionRecord, AuditFinding, Severity, worst_severity
 
 # Tool-name fragments that mark a consequential action: it changes the world outside the
@@ -73,7 +74,20 @@ class AuditReport:
         }
 
 
-def _record_findings(seq: int, record: ActionRecord) -> Tuple[AuditFinding, ...]:
+def _digest_is_measured(seq: int, record: ActionRecord,
+                        bindings: Optional[Mapping[int, str]]) -> bool:
+    """A digest is measured only when a tool-derived binding matches it exactly.
+
+    The `ws1:` prefix is not evidence on its own - anyone can type it - so the binding
+    line beside the ledger is what is checked, and it must name the same digest.
+    """
+    if not bindings or not is_tagged(record.model_digest):
+        return False
+    return bindings.get(seq) == record.model_digest
+
+
+def _record_findings(seq: int, record: ActionRecord,
+                     bindings: Optional[Mapping[int, str]] = None) -> Tuple[AuditFinding, ...]:
     findings = []
 
     if not record.verifier.strip():
@@ -119,6 +133,20 @@ def _record_findings(seq: int, record: ActionRecord) -> Tuple[AuditFinding, ...]
                 seq=seq,
             )
         )
+    elif not _digest_is_measured(seq, record, bindings):
+        findings.append(
+            AuditFinding(
+                code="AAL-007",
+                severity=Severity.WARN,
+                detail=(
+                    "MODEL-DIGEST-UNMEASURED: action on '%s' declares digest %s but no "
+                    "manifest binding exists for seq %d - a typed digest is a "
+                    "transcription, not evidence"
+                    % (record.tool, record.model_digest[:20], seq)
+                ),
+                seq=seq,
+            )
+        )
 
     if not record.policy_version.strip():
         findings.append(
@@ -133,10 +161,10 @@ def _record_findings(seq: int, record: ActionRecord) -> Tuple[AuditFinding, ...]
     return tuple(findings)
 
 
-def audit(entries: Sequence) -> AuditReport:
+def audit(entries: Sequence, bindings: Optional[Mapping[int, str]] = None) -> AuditReport:
     findings = []
     for entry in entries:
-        findings.extend(_record_findings(entry.seq, entry.record))
+        findings.extend(_record_findings(entry.seq, entry.record, bindings))
 
     unverified = sum(1 for entry in entries if not entry.record.verifier.strip())
     independent = sum(

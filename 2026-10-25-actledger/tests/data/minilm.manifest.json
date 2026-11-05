@@ -1,0 +1,795 @@
+{
+  "format": "safetensors",
+  "model_digest": "772f4d60c0b18e4ddd889178fab5baca6308aa8fe5109698dc2621327d8920b4",
+  "partial": false,
+  "tensor_count": 106,
+  "tensors": {
+    "bert.embeddings.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "bb45d55e394702bc3647bbff25f898eef813eee82d71bc2e68fb333ca636a3d0",
+      "shape": [
+        384
+      ]
+    },
+    "bert.embeddings.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "099afe21f0dd72456e8569f0712b6bc2b69c093467848b6e620ba5c83fe90b83",
+      "shape": [
+        384
+      ]
+    },
+    "bert.embeddings.position_embeddings.weight": {
+      "dtype": "F32",
+      "sha256": "583801f856fed57a1d7d0caf987963ad7f3b03e816342cf7f0fe91cb794b0fc3",
+      "shape": [
+        512,
+        384
+      ]
+    },
+    "bert.embeddings.position_ids": {
+      "dtype": "I64",
+      "sha256": "5738153ec97595b1c1e4dc027f7b7fb4534f19ed2ce9f9ee712e6d34a384cde7",
+      "shape": [
+        1,
+        512
+      ]
+    },
+    "bert.embeddings.token_type_embeddings.weight": {
+      "dtype": "F32",
+      "sha256": "fe1a31c31fdf7e759753b2a3def7d813c7091d1d64c5ff214ec539de2e217c3d",
+      "shape": [
+        2,
+        384
+      ]
+    },
+    "bert.embeddings.word_embeddings.weight": {
+      "dtype": "F32",
+      "sha256": "a7837063bf20cccbbb59d9f6427b9ac08e8822ec2eb37e0d99e38d932821d155",
+      "shape": [
+        30522,
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "791f80685ec5e3c232ab06617ddb2e3f4df55b30912384d76f2f461760b4ac69",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "2443b7cced2ba186d80a7ff3c78f1073f46f3a6e1a23e7d32cf669b66bf476b8",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "4dd527cd9810ab4cd5d09a75812dd856a75bdf9cb3033df72335c3d61115c41c",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "4c224d5236d0a205fb91456e70c298303d77514fbc312c637cd26d2815066d08",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.self.key.bias": {
+      "dtype": "F32",
+      "sha256": "cfe9b1d4b34eaf8e60f6b36466c99f9efba791be9fc960278e42b19ab366c7e2",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.self.key.weight": {
+      "dtype": "F32",
+      "sha256": "1ed2f8277a9cd9fad814f9fe17a09d4803009d572f030d0b7bcea6b3b8d0aacc",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.self.query.bias": {
+      "dtype": "F32",
+      "sha256": "fda3603ddb458edd93a39069a02aedbd3d523f06460ab07785a198c4206ab413",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.self.query.weight": {
+      "dtype": "F32",
+      "sha256": "4ff21f7fcbf0d20e609a1a0a2d0eb04a85944e07e2666978ec0fdcd71b0bfdc5",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.self.value.bias": {
+      "dtype": "F32",
+      "sha256": "00ce2c3acdd2081b7feea4260eb11838a109553651e6a3ce3a4a2fb7e1124a05",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.attention.self.value.weight": {
+      "dtype": "F32",
+      "sha256": "8b4a7d6605aaba15b3a1b7182b8a458b4abba2fe63d3618683aea8df96ea9167",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.0.intermediate.dense.bias": {
+      "dtype": "F32",
+      "sha256": "00f12881ff4ee74127b7aa373032b3eaf957adc5b131f52e25d6a805aea892ad",
+      "shape": [
+        1536
+      ]
+    },
+    "bert.encoder.layer.0.intermediate.dense.weight": {
+      "dtype": "F32",
+      "sha256": "b1a00968d065ac070f3ae1d4d7b57ad256038e32e3d98d88b6bab174c3e89ac9",
+      "shape": [
+        1536,
+        384
+      ]
+    },
+    "bert.encoder.layer.0.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "17d8aeb6b6d2457fefeff68fdb20b50b521225ffa48fe4f0b08eb3923b6e0e69",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "ab4369fcb2aecb7c823a7d55b1ce033d6db94e180338e91c8cf7d741d1af924b",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "a366f62cd4fcb40449bdf9492f2aeefb21030febbaed7f97f98149b17e22305c",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.0.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "c8894bdc18e66809d33378cb8f7509a36fe2a24d80339ae38f65a29da4a23958",
+      "shape": [
+        384,
+        1536
+      ]
+    },
+    "bert.encoder.layer.1.attention.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "30d5b040a70adc562588f1606ba5d8db6d134053d8beeb9bb832b155671faef9",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "866559b5788b21c4e6dafff5026b9267a9149125b245a6b8a7f902dd0ee8ad57",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "24580b57d46594b300a4dc1f1981486793049d0798976fa0ef41010e59f62896",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "60330dab46b5c7fe0a23762b70d6e45f9807a25e3ddfbfa7d01684cdba5582b7",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.self.key.bias": {
+      "dtype": "F32",
+      "sha256": "edf283b85c1100682d2b69a4785544672360a832cb83876a776792368b08ccf0",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.self.key.weight": {
+      "dtype": "F32",
+      "sha256": "f16739b2827bc3c163d2087b7c494fe254282ba503c52aa643dff26eac05366e",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.self.query.bias": {
+      "dtype": "F32",
+      "sha256": "50b1a348e26e18e479ab26d62f0456cc7353a13d904ef817ab66565feae9d719",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.self.query.weight": {
+      "dtype": "F32",
+      "sha256": "b5c782b9fc6addd18f0d47db4dd774438eb42029e2aceb8a119ae8fd17169e07",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.self.value.bias": {
+      "dtype": "F32",
+      "sha256": "34cb26c38d3234606db5a61d701f879e28b21613730f5dd33fd581ffa5868dea",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.attention.self.value.weight": {
+      "dtype": "F32",
+      "sha256": "ba1d7117392407a0b3bdcbb036a630c603564d1d8382bc94c81f9dd2e83d1e5b",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.1.intermediate.dense.bias": {
+      "dtype": "F32",
+      "sha256": "7f5abbf06c52874dddc8ff4bf24079b1d3e5ce98c18ba79a91970b4c1cef2c40",
+      "shape": [
+        1536
+      ]
+    },
+    "bert.encoder.layer.1.intermediate.dense.weight": {
+      "dtype": "F32",
+      "sha256": "6eec2dc94284fdc353153e1be26912d62a5baa4d03a3293a0644badb02de87ae",
+      "shape": [
+        1536,
+        384
+      ]
+    },
+    "bert.encoder.layer.1.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "2ae5531d1ef81c7143a81db9f7d6c0cd49bbec0627d0dad71cf5c3618129316b",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "21343e3c33b2fe56719c5c6b60fbf8023fcf7094bbfbe4b144b2bd4aff1a1f37",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "96a5bd3f5d8222f6071afb0b3375508544d0041451a7dd1d82567045e09b9ee6",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.1.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "4f7fed3ea950ae6d76e2204bce21dcfa2bbb2c7d292369e60876124bdce91a57",
+      "shape": [
+        384,
+        1536
+      ]
+    },
+    "bert.encoder.layer.2.attention.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "b7254f012dcd483b7a28d9192d0598ee87021d10f9fc8e3ffb6546180f7fb046",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "9244ee550c34492324decfec412cdbba503e7bb66e0ccfff8a216df4399b410a",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "2a1fd537f5825dd141a065d95f7348e79527d4b82aeb671caf7f65e474620ae2",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "492fd11a0adab3153551b2e5509ca34be178f353c2c514291287e5180e702e77",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.self.key.bias": {
+      "dtype": "F32",
+      "sha256": "0277536ebd942f1a77f61c21087f9ec86557652ac68dd5f3d6384c02b9ce81f2",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.self.key.weight": {
+      "dtype": "F32",
+      "sha256": "e87aef709c0af51ce49559b954850bff2eeb1f91dc88481fa0e972df00f98e3f",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.self.query.bias": {
+      "dtype": "F32",
+      "sha256": "1e647c0b20d57b62e0aa84e015d71443685c02fee10707a2e56ea2e1ecd8ad94",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.self.query.weight": {
+      "dtype": "F32",
+      "sha256": "37824882c7d5675256a683878a15110d82212efceb17f236a74c2cce62ae1367",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.self.value.bias": {
+      "dtype": "F32",
+      "sha256": "f41854354c732bf72c51d5363d7005952a6a43e219c6b6e5d82e49f359d3e067",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.attention.self.value.weight": {
+      "dtype": "F32",
+      "sha256": "12a88c6a739052cc407e9f3ee28af1e4a163997bfe6d01ea68c297021d7c070f",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.2.intermediate.dense.bias": {
+      "dtype": "F32",
+      "sha256": "0060e9ae99379df6511beee42abcbe90e6460590788e22ca11f4f03e98d1ff22",
+      "shape": [
+        1536
+      ]
+    },
+    "bert.encoder.layer.2.intermediate.dense.weight": {
+      "dtype": "F32",
+      "sha256": "7bc8f0ad9b7959ae3b96ad0fdfafb5459d9696f1e45ba86d677aee6e50c6b2e0",
+      "shape": [
+        1536,
+        384
+      ]
+    },
+    "bert.encoder.layer.2.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "d0faa54d109f029c87947abdcf107a0e291c51f4c18b6029d8291b7d5e55467a",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "a571f1b44472ac1e7cbfd49b03209fa1d8a0197189cda4e15c49baa1a9391e52",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "58894b11e340a1fc581ae653bc999e3b71de91ac4d2767060e96b6df11b19cfa",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.2.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "42b35dd2677fa77c7d08cd4a180a20c6ec23396f1a5778760b17c5e29bae5f23",
+      "shape": [
+        384,
+        1536
+      ]
+    },
+    "bert.encoder.layer.3.attention.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "ceafb88de766ae35b2d9e2d9adab27b5941194392ca5dbb0d17bf207180ac2aa",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "5674c208f9d6cb66d62bc69590e807b6350f0e2536d2b974c9db4b00274077c0",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "16196accea3d1485df3467a779769ffdef7a1cfa39e7165662e4e06734679d60",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "2fba2e6526fe9499a8c9458eecf7cca3057da3e61f927d8c0fab82da46d64124",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.self.key.bias": {
+      "dtype": "F32",
+      "sha256": "2c65ee6b5038b4a1546338216afd37dbd374a2d5df0a3d96120ccc2f923fc20f",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.self.key.weight": {
+      "dtype": "F32",
+      "sha256": "e367136ebe3c8e996f99b23d758cfccba37b984cdf00a83c6da427b7ff10ba0d",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.self.query.bias": {
+      "dtype": "F32",
+      "sha256": "9bc99e8d5b00d7731b60ade074fea5ca89d26115f7ed2c38181404dd4fd2be3d",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.self.query.weight": {
+      "dtype": "F32",
+      "sha256": "3a4b9474edc10d5635cf700b0b8dae0b9b07c87a2d50b1f3c036682e215470d4",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.self.value.bias": {
+      "dtype": "F32",
+      "sha256": "0912b8a1894764ed4b5cd2341dc9e1185d33881c61f0cc6c2d893f05b30dd36c",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.attention.self.value.weight": {
+      "dtype": "F32",
+      "sha256": "e68ed4c3eb02bc66a23703841a88c132260f376669739611d1e6b3a55ac525ab",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.3.intermediate.dense.bias": {
+      "dtype": "F32",
+      "sha256": "4e74d2581c3c705cbbbb9d65cc2a116081662274bf4c0047fb31c044f0c7a523",
+      "shape": [
+        1536
+      ]
+    },
+    "bert.encoder.layer.3.intermediate.dense.weight": {
+      "dtype": "F32",
+      "sha256": "9517581235089abc30bb8e2ec10fbb93166ad6febf4ec83786733b021bdd3f84",
+      "shape": [
+        1536,
+        384
+      ]
+    },
+    "bert.encoder.layer.3.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "98eb08c1a9b7d980346d8ef56fb266411254d6338755f56507fe28768344ef74",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "83ee99e2f3966aa59d6968d11286069cc58709ae141aa293c2abed423c00ad1f",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "f9d28ebbcb54e6514b07d80a95bd7d10db58e81de19fa7de92744ba98effa0f9",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.3.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "99405ec2f37d05fd2c187e8de487b16d1a1c66d92788568fa5e049fcb22c88b2",
+      "shape": [
+        384,
+        1536
+      ]
+    },
+    "bert.encoder.layer.4.attention.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "8073a78ba4770ba162354e1a3cb65799ad18ce9e2d4927312d41503984d17e33",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "0b8a7e08e0213d109969ca324382cfebf53240e785d28809c41a185972e09ac8",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "10400bf98ae818cb0b6ba2a97db6863e1a22e77b808841bdb908d81e83be50ca",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "d65444260cb8c1e97985fedd9daf8c79723f45ad8335e038f3199a18c9e26612",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.self.key.bias": {
+      "dtype": "F32",
+      "sha256": "ac44fa842d4fdb7539a54e1314e2933d4bac9410474a2cfc88e23fa5a9704905",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.self.key.weight": {
+      "dtype": "F32",
+      "sha256": "6bc9b0e3901d4e494632089c36f56c738b1d4e03b360813e634efefa9a7d91ec",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.self.query.bias": {
+      "dtype": "F32",
+      "sha256": "dd14f5f97e32cf03b8e1a637a2721ff28d743ca515acc636c7e5cd3638d2145c",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.self.query.weight": {
+      "dtype": "F32",
+      "sha256": "67dde0acb8e73ee2c16ac889f494f9fbfcaf67bc47f3d81c5282803fab8f07d4",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.self.value.bias": {
+      "dtype": "F32",
+      "sha256": "76782695832fb300bf8537a32c2e1fc6b2f7f6a30e18ab55c312a6d8f93bc2f0",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.attention.self.value.weight": {
+      "dtype": "F32",
+      "sha256": "659205608b7e378d5647ef43f5a2859e84559d2c68ed0cd84e46aa2ad694b70e",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.4.intermediate.dense.bias": {
+      "dtype": "F32",
+      "sha256": "bc9e76057bff7d02d6b681a6b373e8e6480befedb96df056fc3c170e2c3538fb",
+      "shape": [
+        1536
+      ]
+    },
+    "bert.encoder.layer.4.intermediate.dense.weight": {
+      "dtype": "F32",
+      "sha256": "5aae991a54207c119797a1f5ddd5b3964c81c86c56454a0822b263fb0d73609b",
+      "shape": [
+        1536,
+        384
+      ]
+    },
+    "bert.encoder.layer.4.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "5515030da6a74ea5c81af123397a2104264fedaec0d1f58a41b95cd672b900ec",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "8a73dd2344187de5fcbd98c19d4ee5a8eba00215c74a41024c1d197ed5081144",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "12dc7dd90448bbd0394466eaf6aa95845d4c6d9fe5ea4f7ae6c77d46879c63e8",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.4.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "c44636fd94535c3c97d64f43eedc5179089966f6ea6cf6635fd7d79a3d5b10cf",
+      "shape": [
+        384,
+        1536
+      ]
+    },
+    "bert.encoder.layer.5.attention.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "68ad886a26da1d658cf5568380522d962aa58442aa300e4da19789d74d2ed16f",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "655c6b06bfe292284172c0a38f0ea516dd07cd7eebdf0c065c479e9a1455575f",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "1f001fa6378763bd92d70986a28a2e1d6712e722bf1dd7cf28b37551a36e6e89",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "5e258c532b1b879198823c39940510adbb68fffe7f9508a7d82d12aad09ea16e",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.self.key.bias": {
+      "dtype": "F32",
+      "sha256": "0d0e1e5477afeae00f81c03aab3579f7cf4af78313e5a6e2e6250b20960b59b3",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.self.key.weight": {
+      "dtype": "F32",
+      "sha256": "ea54ceaf8bfd9d4796ad1845317d3c1df4c2b676e24ccab0c271293b4da9cc5a",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.self.query.bias": {
+      "dtype": "F32",
+      "sha256": "329b872d84fb55f9964dfd9d1d52837f609a748a3b8e5991f5cfef26761fd3dd",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.self.query.weight": {
+      "dtype": "F32",
+      "sha256": "534eb06885aed00ebbd0926fa24094e90d33e6c664cce09d59cddc9ee4b66b19",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.self.value.bias": {
+      "dtype": "F32",
+      "sha256": "98c30b569653662d46f43628bf0d50169c2c0bffdca00cb44cfd1dc1ee460f6b",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.attention.self.value.weight": {
+      "dtype": "F32",
+      "sha256": "1dccc2663ae41e090c19c91b153b4ea99cd6225d119f935f33666b63aca570e3",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "bert.encoder.layer.5.intermediate.dense.bias": {
+      "dtype": "F32",
+      "sha256": "4a00aae1dd594dd2e4984d165a600487b46e928f0d1ad8c705efba0903fd2fd1",
+      "shape": [
+        1536
+      ]
+    },
+    "bert.encoder.layer.5.intermediate.dense.weight": {
+      "dtype": "F32",
+      "sha256": "7cc8109b4fe3c2ce7704fd5bb1c64269f4c3b51ca7b8820d0378d2d64b06df9a",
+      "shape": [
+        1536,
+        384
+      ]
+    },
+    "bert.encoder.layer.5.output.LayerNorm.bias": {
+      "dtype": "F32",
+      "sha256": "1529bd7b580adb69e8a27151d8784c080982c1eea769f299697d5b7f4ee75a88",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.output.LayerNorm.weight": {
+      "dtype": "F32",
+      "sha256": "a91a44e6a617807e5d5466aadd8a194b44b01e4726cfb4cc9f045262b695f24a",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.output.dense.bias": {
+      "dtype": "F32",
+      "sha256": "2319fe66b5095a9f28d49cdeeb16f5d557ac181109cdc7fb990df7c40399ff11",
+      "shape": [
+        384
+      ]
+    },
+    "bert.encoder.layer.5.output.dense.weight": {
+      "dtype": "F32",
+      "sha256": "ffca0a843cf2f55a5923492051e05c122dc84f57423ad6cf6d6e468dca577119",
+      "shape": [
+        384,
+        1536
+      ]
+    },
+    "bert.pooler.dense.bias": {
+      "dtype": "F32",
+      "sha256": "bbd3f80a66be173be518db358e813ce6b186dc8e735522dddcdf5fac5397b509",
+      "shape": [
+        384
+      ]
+    },
+    "bert.pooler.dense.weight": {
+      "dtype": "F32",
+      "sha256": "f2a3b1b099b73b6dc56b629bf48d2116663b27d03c07d538b25fe0142d26a4a6",
+      "shape": [
+        384,
+        384
+      ]
+    },
+    "classifier.bias": {
+      "dtype": "F32",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "shape": [
+        1
+      ]
+    },
+    "classifier.weight": {
+      "dtype": "F32",
+      "sha256": "29baaa21cefe0f7b6d4bfe7430f46b5ac6edc6f801516cda9a64216d68403d9a",
+      "shape": [
+        1,
+        384
+      ]
+    }
+  },
+  "tool": "wsaudit",
+  "total_bytes": 90858500,
+  "version": 1
+}
