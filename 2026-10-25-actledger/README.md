@@ -185,6 +185,38 @@ Exit `0` = at least one action is bound to this manifest's digest, `1` = none is
 <M>` proves the bytes on disk still match the manifest (exit `1` on a substituted
 weight); `actledger` proves which actions are bound to that manifest.
 
+## Verifying the manifest itself (2026-11-06)
+
+A binding line records `format`, `tensor_count`, `manifest_sha256` and the manifest path.
+Until today nothing read those four fields back: `audit` only asked whether a binding named
+the same digest, so a MEASURED row carried provenance claims whose truth was never
+checked. Edit the manifest after binding and the row still read MEASURED.
+
+```sh
+PYTHONPATH=src python3 -m actledger audit --ledger actions.jsonl --verify-manifest
+```
+
+For every MEASURED row it re-opens the recorded manifest, recomputes its canonical
+sha256, and compares it with the fingerprint written at binding time. Three states —
+never two:
+
+| state | code | severity | meaning |
+|---|---|---|---|
+| pass | — | — | the manifest is still the file that produced this digest |
+| changed | `MANIFEST-SHA-MISMATCH` | FLAG | edited after the digest was bound |
+| unmeasurable | `MANIFEST-UNMEASURABLE` | WARN | gone, unreadable, or bound before fingerprints existed |
+
+`MANIFEST-UNMEASURABLE` is not a pass. "Could not check" and "checked and fine" are
+different answers, and the tool says which one it gave you. At the default `--fail-on FLAG`
+an unmeasurable row is reported but does not fail the run; `--fail-on WARN` makes a
+provenance gap fatal, which is what a CI gate over model lineage wants.
+
+Portability: the binding records `manifest_basename` as well as the abspath. A ledger
+copied to another machine with its manifest beside it still verifies — by name — and the
+report says which resolution it used (`resolved_by: "path"` or `"basename"`). Resolution
+never searches beyond the ledger's own directory: a same-named file somewhere else is not
+the same measurement.
+
 ## Measured on real data, not fixtures
 
 Run against this host's live Hermes kanban database (635 real agent runs):
@@ -208,7 +240,7 @@ containing only the bundle.
 PYTHONPATH=src python3 -m unittest discover -s tests
 ```
 
-153 tests, no third-party test runner required. `tests/data/minilm.manifest.json` is a
+172 tests, no third-party test runner required. `tests/data/minilm.manifest.json` is a
 manifest produced by `wsaudit` over a real 90 MB safetensors file, so the digest
 reimplementation in `manifest.py` is checked against wsaudit's own output on every run.
 
@@ -221,6 +253,7 @@ src/actledger/
   ledger.py    file-backed append-only ledger + committed head
   audit.py     responsibility report (the differentiator)
   manifest.py  wsaudit manifest -> recomputed digest -> binding sidecar
+  provenance.py re-measure the manifest each bound digest came from
   export.py    self-contained bundles
   sources.py   adapters from an existing runtime's own records
   cli.py       record / verify / audit / export / verify-bundle / tail / verify-binding

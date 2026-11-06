@@ -210,32 +210,52 @@ def binding_path(ledger_path: str) -> str:
     return ledger_path + ".manifests.jsonl"
 
 
-def append_binding(ledger_path: str, seq: int, derived: DerivedDigest,
-                   manifest_path: str, recorded_at: str) -> None:
-    line = {
-        "seq": int(seq),
-        "model_digest": derived.tagged,
-        "format": derived.format,
-        "tensor_count": derived.tensor_count,
-        "manifest_sha256": derived.manifest_sha256,
-        "manifest": os.path.abspath(manifest_path),
-        "recorded_at": recorded_at,
-    }
-    try:
-        with open(binding_path(ledger_path), "a", encoding="utf-8") as handle:
-            handle.write(json.dumps(line, sort_keys=True) + "\n")
-            handle.flush()
-            os.fsync(handle.fileno())
-    except OSError as exc:
-        raise BindingError("cannot write binding for seq %d (%s)" % (seq, exc))
+@dataclass(frozen=True)
+class Binding:
+    """One sidecar line: the digest a tool derived, and the manifest it came from.
+
+    `manifest_sha256` is a fingerprint of the manifest file itself, so the provenance
+    claim can be re-measured later. `manifest` is the absolute path on the machine that
+    wrote the ledger; `manifest_basename` is what survives a move to another machine -
+    the reason both are recorded.
+    """
+
+    seq: int
+    model_digest: str
+    format: str = ""
+    tensor_count: int = 0
+    manifest_sha256: str = ""
+    manifest: str = ""
+    manifest_basename: str = ""
+    recorded_at: str = ""
 
 
-def load_bindings(ledger_path: str) -> Dict[int, str]:
-    """seq -> the digest a tool derived for it. Absent file means nothing was bound."""
+def _binding_from_payload(payload: Mapping[str, Any]) -> Binding:
+    manifest = str(payload.get("manifest") or "")
+    basename = str(payload.get("manifest_basename") or "")
+    if not basename and manifest:
+        basename = os.path.basename(manifest)
+    tensor_count = payload.get("tensor_count")
+    if not isinstance(tensor_count, int) or isinstance(tensor_count, bool):
+        tensor_count = 0
+    return Binding(
+        seq=int(payload["seq"]),
+        model_digest=str(payload["model_digest"]),
+        format=str(payload.get("format") or ""),
+        tensor_count=tensor_count,
+        manifest_sha256=str(payload.get("manifest_sha256") or "").lower(),
+        manifest=manifest,
+        manifest_basename=basename,
+        recorded_at=str(payload.get("recorded_at") or ""),
+    )
+
+
+def load_binding_records(ledger_path: str) -> Dict[int, Binding]:
+    """seq -> the whole binding line. Absent file means nothing was bound."""
     path = binding_path(ledger_path)
     if not os.path.exists(path):
         return {}
-    bindings: Dict[int, str] = {}
+    bindings: Dict[int, Binding] = {}
     try:
         with open(path, "r", encoding="utf-8") as handle:
             lines = handle.read().splitlines()
@@ -264,5 +284,34 @@ def load_bindings(ledger_path: str) -> Dict[int, str]:
             raise BindingError(
                 "binding file %s binds seq %d twice - a ledger seq is written once" % (path, seq)
             )
-        bindings[seq] = str(payload["model_digest"])
+        bindings[seq] = _binding_from_payload(payload)
     return bindings
+
+
+def load_bindings(ledger_path: str) -> Dict[int, str]:
+    """seq -> the digest a tool derived for it. The digest-only view `audit` needs."""
+    return {
+        seq: binding.model_digest
+        for seq, binding in load_binding_records(ledger_path).items()
+    }
+
+
+def append_binding(ledger_path: str, seq: int, derived: DerivedDigest,
+                   manifest_path: str, recorded_at: str) -> None:
+    line = {
+        "seq": int(seq),
+        "model_digest": derived.tagged,
+        "format": derived.format,
+        "tensor_count": derived.tensor_count,
+        "manifest_sha256": derived.manifest_sha256,
+        "manifest": os.path.abspath(manifest_path),
+        "manifest_basename": os.path.basename(manifest_path),
+        "recorded_at": recorded_at,
+    }
+    try:
+        with open(binding_path(ledger_path), "a", encoding="utf-8") as handle:
+            handle.write(json.dumps(line, sort_keys=True) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+    except OSError as exc:
+        raise BindingError("cannot write binding for seq %d (%s)" % (seq, exc))

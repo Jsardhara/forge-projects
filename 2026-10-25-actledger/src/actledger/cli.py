@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 import sys
+from dataclasses import replace
 from datetime import datetime, timezone
 from typing import List, Optional
 
@@ -23,9 +24,11 @@ from .manifest import (
     append_binding,
     bare_hex,
     derive,
+    load_binding_records,
     load_bindings,
 )
-from .models import ActionRecord
+from .models import ActionRecord, worst_severity
+from .provenance import check_bindings
 
 
 class _UsageError(Exception):
@@ -72,6 +75,11 @@ def _parser() -> _Parser:
     audit_cmd = sub.add_parser("audit", help="report actions with no named verifier")
     audit_cmd.add_argument("--ledger", required=True)
     audit_cmd.add_argument("--json", action="store_true")
+    audit_cmd.add_argument(
+        "--verify-manifest",
+        action="store_true",
+        help="re-measure the manifest every bound digest came from",
+    )
     audit_cmd.add_argument(
         "--fail-on", default="FLAG", type=str.upper, choices=list(FAIL_ON_ORDER)
     )
@@ -179,11 +187,20 @@ def _cmd_verify(args) -> int:
 
 
 def _cmd_audit(args) -> int:
+    entries = Ledger(args.ledger).entries()
     bindings = load_bindings(args.ledger)
-    report = audit(Ledger(args.ledger).entries(), bindings)
+    report = audit(entries, bindings)
+    provenance = None
+    if args.verify_manifest:
+        provenance = check_bindings(entries, load_binding_records(args.ledger), args.ledger)
+        findings = report.findings + provenance.findings
+        report = replace(report, findings=findings, severity=worst_severity(findings))
     code = 0 if report.acceptable(args.fail_on) else 1
     if args.json:
-        print(json.dumps(report.to_dict(), sort_keys=True))
+        payload = report.to_dict()
+        if provenance is not None:
+            payload["provenance"] = provenance.to_dict()
+        print(json.dumps(payload, sort_keys=True))
         return code
     for finding in report.findings:
         print("%s %s seq=%d %s" % (finding.code, finding.severity.value, finding.seq, finding.detail))
@@ -191,6 +208,16 @@ def _cmd_audit(args) -> int:
         "verdict: %s | actions: %d | unverified: %d | independently verified: %d"
         % (report.severity.value, report.total, report.unverified, report.independent_verified)
     )
+    if provenance is not None:
+        print(
+            "provenance: %d checked | %d pass | %d mismatch | %d unmeasurable"
+            % (
+                provenance.checked,
+                provenance.passed,
+                provenance.mismatched,
+                provenance.unmeasurable,
+            )
+        )
     return code
 
 

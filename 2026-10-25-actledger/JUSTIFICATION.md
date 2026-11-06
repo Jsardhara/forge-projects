@@ -111,3 +111,65 @@ appended beside the ledger (`<ledger>.manifests.jsonl`), and `audit` treats a di
 measured only when that line names the same value — the `ws1:` tag alone is not evidence,
 because anyone can type it. `verify-binding` answers the auditor's reverse question: which
 actions in this ledger ran on these exact weights.
+
+---
+
+# 2026-11-06 — the binding's own provenance was written and never checked
+
+## The problem
+
+Yesterday's change made a digest *measured*: `record --model-manifest` derives it from a
+wsaudit manifest and writes a binding line beside the ledger. That line records seven
+fields, and four of them — `format`, `tensor_count`, `manifest_sha256`, `manifest` —
+were read back by nothing.
+
+```
+append_binding   writes: seq, model_digest, format, tensor_count,
+                          manifest_sha256, manifest (abspath), recorded_at
+load_bindings    returns: Dict[int, str]        # seq -> model_digest ONLY
+audit             uses:   bindings.get(seq) == record.model_digest
+```
+
+So a MEASURED row asserted "these are the bytes that produced this digest" and no code
+path recomputed it. `manifest_sha256` was a claim in a file whose provenance is exactly
+what the ledger could not falsify. Concretely: edit the manifest after binding, and the
+row still reads MEASURED — the digest in the record is unchanged, the binding still names
+it, and the file it came from is never looked at again. Substitution of the *manifest* is
+cheap and silent, even though substitution of the *weights* is caught.
+
+The second half is portability. `manifest` is an absolute path, so a ledger handed to
+another machine records a location that means nothing there. The artifact stops being
+self-describing the moment it leaves the box it was written on — which is the one thing an
+evidence ledger cannot afford.
+
+## Who the user is
+
+The same two users as the project's first justification, one step further along. The
+operator who exports a ledger is now handing over something that says "measured against
+manifest sha256:fb09bc1f…" — and until today, the recipient could only take that on trust.
+The auditor on the other machine is the one who needs to re-measure it, and had neither
+the fingerprint to compare against nor a path that resolved.
+
+## Why existing solutions are inadequate
+
+- **`wsaudit hash <file> --manifest <M>`** proves the weights still match the manifest. It
+  takes both from the command line — a verifier handed only a ledger cannot know which
+  manifest to pass it, or that the file at that path is the one originally measured.
+- **The digest comparison in `audit`** proves a binding names the same digest. It says
+  nothing about the file the digest was derived from.
+- **Signing the manifest** (sigstore-style) proves a publisher signed it; it needs a key
+  and a network, and it does not help when the question is "is this the file *I* measured
+  an hour ago on this box".
+- **A bare abspath** is what the sidecar recorded until today: correct on one machine,
+  meaningless on every other.
+
+## What this change is
+
+`audit --verify-manifest` re-measures every MEASURED row: it re-opens the recorded
+manifest, recomputes its canonical sha256, and compares it with the fingerprint written at
+binding time. Three states, never two — `PASS`, `MANIFEST-SHA-MISMATCH` (FLAG, the file
+changed after it was measured), and `MANIFEST-UNMEASURABLE` (WARN: gone, unreadable, or a
+binding written before fingerprints were taken). "Could not check" is never reported as
+"checked and fine". The binding also records `manifest_basename`, so a ledger that moves
+with its manifest still verifies by name, and resolution never searches beyond the ledger's
+own directory — a same-named file elsewhere is not the same measurement.
