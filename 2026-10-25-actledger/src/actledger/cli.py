@@ -17,6 +17,7 @@ from typing import List, Optional
 from .audit import FAIL_ON_ORDER, audit
 from .chain import GENESIS_HASH, sha256_hex
 from .export import ExportError, build_bundle, read_bundle, verify_bundle, write_bundle
+from .bundleproof import ABSENT as BINDINGS_ABSENT
 from .ledger import Ledger, LedgerError
 from .manifest import (
     BindingError,
@@ -87,6 +88,11 @@ def _parser() -> _Parser:
     export = sub.add_parser("export", help="write a self-contained audit bundle")
     export.add_argument("--ledger", required=True)
     export.add_argument("--out", required=True)
+    export.add_argument(
+        "--no-provenance",
+        action="store_true",
+        help="omit bindings deliberately; the bundle then says so and verifies as uncheckable",
+    )
 
     verify_bundle_cmd = sub.add_parser("verify-bundle", help="verify a bundle offline")
     verify_bundle_cmd.add_argument("path")
@@ -222,18 +228,67 @@ def _cmd_audit(args) -> int:
 
 
 def _cmd_export(args) -> int:
-    bundle = build_bundle(Ledger(args.ledger).entries())
+    entries = Ledger(args.ledger).entries()
+    bindings = None if args.no_provenance else load_binding_records(args.ledger)
+    bundle = build_bundle(entries, bindings)
     write_bundle(args.out, bundle)
-    print("exported %d record(s), head %s -> %s" % (bundle["count"], bundle["head_hash"][:16], args.out))
+    carried = 0 if bundle["bindings"] is None else len(bundle["bindings"])
+    print(
+        "exported %d record(s), %d binding(s), provenance %s, head %s -> %s"
+        % (
+            bundle["count"],
+            carried,
+            bundle["provenance"],
+            bundle["head_hash"][:16],
+            args.out,
+        )
+    )
     return 0
 
 
+def _bundle_payload(report) -> dict:
+    return report.to_dict()
+
+
 def _cmd_verify_bundle(args) -> int:
-    result = verify_bundle(read_bundle(args.path))
+    report = verify_bundle(read_bundle(args.path))
     if args.json:
-        print(json.dumps(_verification_payload(result), sort_keys=True))
-        return 0 if result.ok else 1
-    return _report_verification(result)
+        print(json.dumps(_bundle_payload(report), sort_keys=True))
+        return report.exit_code
+    if report.ok:
+        print("OK: %d record(s) verified, head %s" % (report.checked, report.head_hash[:16]))
+    else:
+        print("BREAK: %d record(s) walked, %d break(s)" % (report.checked, len(report.breaks)))
+    for brk in report.breaks:
+        print("  %s seq=%d %s" % (brk.code, brk.seq, brk.detail))
+
+    proof = report.proof
+    if report.state == BINDINGS_ABSENT or proof is None:
+        print(
+            "BINDINGS-ABSENT no bindings travelled with this artifact - provenance is "
+            "not checkable here, which is not the same answer as clean"
+        )
+    else:
+        print(
+            "BINDINGS-PRESENT %d binding(s) carried | %d corroborated | %d mismatched | "
+            "%d not checkable"
+            % (
+                len(report.bindings),
+                proof.corroborated,
+                proof.mismatched,
+                proof.unmeasurable,
+            )
+        )
+        if proof.declared_present:
+            print(
+                "audit: %s declared, %s earned by these records"
+                % (
+                    (proof.declared or {}).get("severity", "?"),
+                    proof.recomputed.get("severity", "?"),
+                )
+            )
+    print("state: %s" % report.state)
+    return report.exit_code
 
 
 def _cmd_tail(args) -> int:

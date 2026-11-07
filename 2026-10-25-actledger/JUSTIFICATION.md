@@ -173,3 +173,76 @@ binding written before fingerprints were taken). "Could not check" is never repo
 "checked and fine". The binding also records `manifest_basename`, so a ledger that moves
 with its manifest still verifies by name, and resolution never searches beyond the ledger's
 own directory — a same-named file elsewhere is not the same measurement.
+
+---
+
+# 2026-11-07 — the bundle cannot check the two claims the project exists to make
+
+## The problem
+
+`export.py` says what a bundle is, in its own words: "A bundle is the artifact you hand to
+someone outside the machine… Verification needs this tool's stdlib code and the bundle.
+That is the whole trust base." For immutability that is true: `verify_bundle` re-walks the
+chain and a dropped or edited record breaks it.
+
+For the other two legs it is not true, and the file says so by omission. `build_bundle`
+emits exactly five keys — `format`, `generated_at`, `count`, `head_hash`, `entries`.
+`grep -n "audit\|binding\|manifest\|provenance" src/actledger/export.py` returns one hit,
+and it is the docstring. So:
+
+* **Responsibility** (AAL-001/002/003) cannot be judged off-machine, because the findings
+  that judge `verifier` / `approved_by` / `approved_at` are computed by `audit`, which
+  nothing in the export path calls. The receiver holds the fields and no verdict.
+* **Provenance** (AAL-007) cannot be judged either, because `record.to_dict()` emits
+  `model_digest`, `models.py` records a `ws1:…` string, and no binding travels with it.
+  Every `ws1:` digest in a bundle is therefore a transcription that looks exactly like
+  evidence — which is the failure AAL-007's own detail string names ("a typed digest is a
+  transcription, not evidence"). The claim is in the artifact; the proof is on the machine
+  the artifact left.
+
+`cli.py:225` makes it concrete: `build_bundle(Ledger(args.ledger).entries())` — the
+bindings are not even loaded, so the exporter could not carry them if it wanted to.
+
+## Who the user is
+
+The same auditor as before, one step further out. They are handed a `.bundle.json` and
+nothing else: no ledger, no sidecar, no manifest directory, no shell on the exporting
+machine. Today they can prove the records were not altered. They cannot prove the bundle's
+declared posture is the posture the records actually earn, and they cannot tell a digest
+that a tool derived from a digest someone typed. A verifier who trusts the artifact
+currently asserts more than they can support — the precise failure this tool exists to
+prevent, reproduced in its own exit door.
+
+## Why existing solutions are inadequate
+
+* **"Just ship the ledger and sidecar"** is what `export` was supposed to replace: the
+  sidecar sits beside the ledger as a file path, and the whole point of a bundle is that
+  the artifact is one file and the trust base is stdlib code.
+* **"Put the manifest in the bundle"** does not scale and does not answer the question —
+  a 45 KB manifest per row bloats the artifact, and the manifest is still a transcription
+  unless its fingerprint is checked.
+* **"Trust the declared verdict"** is backwards. A declared verdict that the artifact
+  cannot recompute is a claim, not a finding.
+* **Re-measuring the manifest off-machine is impossible by construction** — the file is
+  not in the bundle. The honest answer is a third state, not a pass.
+
+## What this change is
+
+Bundle format `actledger-bundle/2`. The bundle now carries `bindings` (each row's full
+derivation: digest, tensor count, format, manifest basename and fingerprint — never the
+abspath, which means nothing on the receiving machine) and `audit` (the posture computed
+at export time by the same `audit` code). `verify-bundle` recomputes both from the
+artifact's own records and bindings:
+
+* every `ws1:` digest must be corroborated by a binding that names the identical digest —
+  `BINDING-MISMATCH` (FLAG) when one names a different digest, which is the forgery case,
+  because bindings live outside the hash chain and the bundle is attacker-reachable;
+* the declared posture must equal the recomputed one — `AUDIT-DIVERGES` (FLAG) otherwise,
+  so "declared PASS" cannot travel with records that do not earn it;
+* `BINDINGS-ABSENT` (exit 2, not pass) when a v1 bundle or a `--no-provenance` export
+  carries no bindings at all. An old bundle must read as *not checkable*, never as clean.
+
+The manifest fingerprint leg stays explicitly unproven off-machine and is named as such
+(`MANIFEST-NOT-BUNDLED`, INFO): the bundle says what it cannot prove rather than implying
+it did. A receiver who is also handed the manifest still re-measures it with
+`audit --verify-manifest` — unchanged from 2026-11-06.

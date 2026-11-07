@@ -6,6 +6,7 @@ import unittest
 
 from actledger.chain import GENESIS_HASH, make_entry
 from actledger.export import (
+    BINDINGS_ABSENT,
     BUNDLE_FORMAT,
     build_bundle,
     bundle_digest,
@@ -69,10 +70,16 @@ class TestBundleDigest(unittest.TestCase):
 
 
 class TestVerifyBundle(unittest.TestCase):
-    def test_clean_bundle_verifies(self):
+    def test_clean_chain_alone_is_not_checkable(self):
+        # Chain-only bundle: the records are intact, but nothing in the artifact can
+        # corroborate a digest or reproduce the posture. Not checkable != clean.
         result = verify_bundle(build_bundle(chain()))
-        self.assertTrue(result.ok, result.breaks)
+        self.assertFalse(result.ok)
+        self.assertEqual(result.state, BINDINGS_ABSENT)
         self.assertEqual(result.checked, 3)
+        self.assertEqual(
+            [brk.code for brk in result.breaks if brk.code != "BINDINGS-ABSENT"], []
+        )
 
     def test_edited_record_fails_verification(self):
         bundle = json.loads(json.dumps(build_bundle(chain())))
@@ -108,10 +115,15 @@ class TestBundleFiles(unittest.TestCase):
         self.assertTrue(os.path.exists(path))
         self.assertEqual(read_bundle(path)["head_hash"], bundle["head_hash"])
 
-    def test_written_bundle_is_the_verified_one(self):
+    def test_written_bundle_round_trips_its_chain(self):
         path = os.path.join(self.dir, "audit.bundle.json")
         write_bundle(path, build_bundle(chain()))
-        self.assertTrue(verify_bundle(read_bundle(path)).ok)
+        result = verify_bundle(read_bundle(path))
+        self.assertEqual(result.checked, 3)
+        self.assertEqual(
+            [brk.code for brk in result.breaks if brk.code != "BINDINGS-ABSENT"], []
+        )
+        self.assertEqual(result.state, BINDINGS_ABSENT)
 
     def test_bundle_is_self_contained_no_ledger_paths(self):
         text = json.dumps(build_bundle(chain()))

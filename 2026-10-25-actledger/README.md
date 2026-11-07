@@ -42,6 +42,11 @@ This tool is the third leg of a line already in this repo:
   head disagree raises instead of extending a damaged chain.
 - **An exported bundle is self-contained.** No paths, no database handles, nothing that
   refers back to the runtime. `verify-bundle` needs the bundle and this tool's stdlib code.
+- **A bundle proves what it claims.** Since 2026-11-07 it carries each measured digest's
+  derivation and the posture the records earned at export time, and `verify-bundle`
+  recomputes both. A binding edited inside the artifact is `BINDING-MISMATCH`; a declared
+  posture the records do not earn is `AUDIT-DIVERGES`; a bundle carrying no bindings is
+  `BINDINGS-ABSENT`, which exits 2 — *not checkable* is never reported as *clean*.
 
 ### What it does *not* protect against
 
@@ -132,6 +137,21 @@ flag, and one flag is never diluted by a pile of passes.
 Chain break codes: `PARSE-ERROR`, `SEQ-GAP`, `PREV-MISMATCH`, `HASH-MISMATCH`,
 `HEAD-MISMATCH`, and in bundles `FORMAT-MISMATCH`, `COUNT-MISMATCH`.
 
+Bundle-provenance codes (2026-11-07) — these are what `verify-bundle` adds on top of the
+chain, judged from the artifact alone:
+
+| code | severity | meaning |
+|---|---|---|
+| `BINDING-MISMATCH` | FLAG | the bundle's binding names a different digest than its record, is malformed, or carries a fingerprint that is not a sha256 — the binding set lives outside the hash chain, so this is where tampering is caught |
+| `BINDING-ORPHAN` | FLAG | the bundle binds a seq that is not a row carrying a model digest |
+| `BINDING-DUPLICATE` | FLAG | one seq bound twice |
+| `AUDIT-DIVERGES` | FLAG | the declared posture is not the posture these records earn |
+| `BINDING-UNMEASURABLE` | WARN | a tagged digest with no binding, or a binding with no recorded fingerprint |
+| `AUDIT-ABSENT` | WARN | the bundle declares no posture, so there is nothing to compare |
+| `BINDINGS-ABSENT` | WARN | the artifact carries no bindings at all (format v1, or `--no-provenance`) — exits 2, not clean |
+| `MANIFEST-NOT-BUNDLED` | INFO | fingerprints travelled but the manifest is not in the bundle, so they were not re-measured here |
+
+
 ## Binding a *measured* weights digest (2026-11-05)
 
 `--model-digest` is a string you type, and `audit` used to accept any non-empty one. That
@@ -217,6 +237,47 @@ report says which resolution it used (`resolved_by: "path"` or `"basename"`). Re
 never searches beyond the ledger's own directory: a same-named file somewhere else is not
 the same measurement.
 
+## The bundle proves the two legs it exists to carry (2026-11-07)
+
+`export.py` says a bundle is "the artifact you hand to someone outside the machine…
+Verification needs this tool's stdlib code and the bundle. That is the whole trust base."
+For immutability that was true. For **responsibility** and **provenance** it was not: the
+bundle carried `ws1:` digests and `verifier` columns with none of the verdicts that judge
+them, so a receiver outside the machine could prove the records were not altered and
+could not prove a single digest had been derived rather than typed.
+
+Format `actledger-bundle/2` carries the bindings and the posture computed at export time.
+`verify-bundle` now recomputes both from the artifact's own contents:
+
+```sh
+PYTHONPATH=src python3 -m actledger export --ledger actions.jsonl --out audit.bundle.json
+PYTHONPATH=src python3 -m actledger verify-bundle audit.bundle.json
+```
+
+```
+OK: 2 record(s) verified, head 347ac79df40294d5
+  MANIFEST-NOT-BUNDLED seq=-1 manifest fingerprints travelled with the artifact but were
+    not re-measured here: the manifest is not in the bundle. Re-measure it with
+    'audit --verify-manifest' if you were handed the file
+BINDINGS-PRESENT 2 binding(s) carried | 2 corroborated | 0 mismatched | 0 not checkable
+audit: PASS declared, PASS earned by these records
+state: PASS
+```
+
+Exit codes mirror `provenance`: `0` pass, `1` mismatch, `2` could not check. The binding
+set lives **outside** the hash chain, so the artifact is the only place a rewritten binding
+can be caught — that is why an edited binding is a FLAG rather than a warning.
+
+`--no-provenance` writes a deliberately chain-only bundle. It records
+`"provenance": "absent"` and a null binding list **in the file**, and verifies as
+`BINDINGS-ABSENT` (exit 2) instead of silently looking clean. A v1 bundle reads the same
+way: *not checkable*, never *clean*.
+
+The manifest fingerprint still cannot be re-measured from the bundle alone, because the
+manifest is not in it. Rather than imply otherwise, the artifact names that gap
+(`MANIFEST-NOT-BUNDLED`, INFO) and the fingerprint stays actionable for whoever is also
+handed the file: `audit --verify-manifest`.
+
 ## Measured on real data, not fixtures
 
 Run against this host's live Hermes kanban database (635 real agent runs):
@@ -234,13 +295,31 @@ deleted middle record, reordered pair, truncated tail, forged append — and eve
 detected at the right sequence number. The exported bundle verified from a directory
 containing only the bundle.
 
+2026-11-07, on the real weights: `wan2.2_vae.safetensors`, 1,409,400,960 bytes, measured by
+`wsaudit` into a 45,216-byte manifest (digest `ws1:d8fd214326feb41e…`, fingerprint
+`fb09bc1fa579f1fb…`). Two actions were recorded against it, exported, and then the ledger,
+the sidecar **and the manifest** were moved out of the way — a directory containing only
+`audit.bundle.json` verified: `state: PASS`, 2 bindings carried, 2 corroborated, exit 0.
+
+Four adversarial probes on that same real bundle, each asserting its own mutation first:
+
+| probe | exit | code |
+|---|---|---|
+| binding rewritten inside the bundle | 1 | `BINDING-MISMATCH` (+ collateral `AUDIT-DIVERGES`: the forged digest no longer has a binding) |
+| declared posture the records do not earn | 1 | `AUDIT-DIVERGES` |
+| bundle downgraded to format v1 | 2 | `BINDINGS-ABSENT` |
+| `--no-provenance` export | 2 | `BINDINGS-ABSENT` |
+
+The importance of the first row: bindings are not covered by the hash chain, so before this
+change the only way to catch a rewritten binding was to notice it by eye.
+
 ## Tests
 
 ```sh
 PYTHONPATH=src python3 -m unittest discover -s tests
 ```
 
-172 tests, no third-party test runner required. `tests/data/minilm.manifest.json` is a
+200 tests, no third-party test runner required. `tests/data/minilm.manifest.json` is a
 manifest produced by `wsaudit` over a real 90 MB safetensors file, so the digest
 reimplementation in `manifest.py` is checked against wsaudit's own output on every run.
 
@@ -254,7 +333,8 @@ src/actledger/
   audit.py     responsibility report (the differentiator)
   manifest.py  wsaudit manifest -> recomputed digest -> binding sidecar
   provenance.py re-measure the manifest each bound digest came from
-  export.py    self-contained bundles
+  bundleproof.py prove the bundle's two legs from the artifact alone
+  export.py    self-contained bundles (format 2: entries + bindings + posture)
   sources.py   adapters from an existing runtime's own records
   cli.py       record / verify / audit / export / verify-bundle / tail / verify-binding
 scripts/from_hermes_kanban.py
