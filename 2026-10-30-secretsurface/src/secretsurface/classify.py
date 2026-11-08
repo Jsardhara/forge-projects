@@ -8,7 +8,8 @@ reads it, so it must never be bucketed as safe.
 from pathlib import PurePosixPath
 
 # Ordered most-specific-first. Every class a report can emit.
-CLASSES = ("env", "env-backup", "log-leak", "backup-blob", "doc-fixture", "unknown")
+CLASSES = ("env", "env-backup", "committed-config", "log-leak", "backup-blob",
+           "doc-fixture", "unknown")
 
 _ENV_BACKUP_TOKENS = {"bak", "old", "orig", "save", "swp", "bk", "backup"}
 _ENV_DOC_TOKENS = {"example", "sample", "template", "dist"}
@@ -16,6 +17,15 @@ _BACKUP_DIRS = {"backups", "backup", ".curator_backups", "snapshots", "archive"}
 _LOG_SUFFIXES = (".log", ".jsonl", ".ndjson")
 _DOC_SUFFIXES = (".md", ".rst", ".adoc", ".txt")
 _DOC_DIRS = {"skills", "docs", "doc", "tests", "test"}
+
+# Tool-written agent config that lives inside the project folder and is committed
+# with the code by design. Measured class: 1,122 of 104,185 public
+# `.claude/settings.local.json` files hold a real secret. Nothing about the path
+# says "private", so a per-file audit that has no member for it files it under
+# `unknown` beside genuinely local-only files -- erasing the one thing that
+# decides whether a key must be rotated today.
+_COMMITTED_CONFIG_DIRS = {".claude", ".cursor", ".continue", ".aider"}
+_COMMITTED_CONFIG_NAMES = {".mcp.json", "AGENTS.md", ".aider.conf.yml", ".aidersignore"}
 
 
 def _parts(path: str) -> tuple:
@@ -52,6 +62,21 @@ def _is_backup_blob(name: str, parts: tuple) -> bool:
     return any(part.lower() in _BACKUP_DIRS for part in parts[:-1])
 
 
+def _is_committed_config(name: str, parts: tuple) -> bool:
+    """Tool-written agent config that ships with the repo by design."""
+    if name in _COMMITTED_CONFIG_NAMES:
+        return True
+    if name.startswith(".aider"):
+        return True
+    if name.startswith(".mcp") and name.endswith(".json"):
+        return True
+    parents = {p.lower() for p in parts[:-1]}
+    if parents & _COMMITTED_CONFIG_DIRS:
+        return True
+    # `.claude/settings.json`, `settings.local.json`, and future variants.
+    return "settings" in name.lower() and name.endswith(".json") and ".claude" in parents
+
+
 def _is_doc_fixture(name: str, parts: tuple) -> bool:
     if {p.lower() for p in parts[:-1]} & _DOC_DIRS:
         return True
@@ -68,6 +93,8 @@ def classify_path(path: str) -> str:
     env_kind = _classify_env(name)
     if env_kind is not None:
         return env_kind
+    if _is_committed_config(name, parts):
+        return "committed-config"
     if _is_log_leak(name, parts):
         return "log-leak"
     if _is_backup_blob(name, parts):

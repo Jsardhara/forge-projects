@@ -62,6 +62,7 @@ intercepts the report.
 |---|---|
 | `env` | live environment file (`.env`, `.env.local`) |
 | `env-backup` | a superseded env file (`.env.bak.*`, `.env.old`) — rotation residue |
+| `committed-config` | tool-written agent config that ships with the repo by design (`.claude/settings*.json`, `.mcp.json`, `.cursor/`, `AGENTS.md`, `.aider*`) — **published the moment it is committed** |
 | `log-leak` | append-only log or `.jsonl` activity trail |
 | `backup-blob` | curator snapshot, `backups/` dir, `~`/`.bak` copy |
 | `doc-fixture` | documentation, test fixture, skill example — *probably* benign |
@@ -76,7 +77,11 @@ silently bucketed as safe.
 | Signal | Meaning |
 |---|---|
 | `world-readable` | file mode grants read to every user on the box |
-| `in-git-worktree` | a `.git` sits above it — it can be committed as-is |
+| `git-tracked` | **committed** — this file is already published |
+| `git-untracked-unignored` | one `git add .` from being published |
+| `git-unknown` | git could not answer — never read as safe |
+| `no-git-worktree` | git reports no repository above it; it cannot be committed from here |
+| `git-ignored` | git proved the file excluded — the only publication state that reads as *not* published |
 | `superseded-key-may-still-validate` | a backup: rotation did not necessarily reach it |
 | `duplicate-of-live-env` | this backup's fingerprint **equals a live `.env` value** |
 | `copied-or-shipped` | a log: tailed, shipped, pasted into issues |
@@ -98,6 +103,15 @@ unfinished.
   walker that hides dotdirs reports clean while the key sits there.
 - **A PEM header alone is not a key.** Documentation writes the marker with no
   body. Requiring a base64 body removed 34 false findings on real data.
+- **Findings are ordered by whether the file leaves the machine**, then by store
+  class. A committed agent config outranks a superseded backup git has never
+  seen: *is this about to be published* is the question that decides whether
+  someone rotates a key today. `git-unknown` sorts above `git-ignored` so a git
+  failure can never read as safety.
+- **Only git may say "ignored".** The walker's own `.gitignore` matcher decides
+  what to *read*; it is never consulted for what to *report*, because it does not
+  implement `$GIT_DIR/info/exclude` or `core.excludesFile` and a hand-rolled
+  matcher that disagrees with git would clear a file git considers publishable.
 
 ## What it does not do
 
@@ -110,8 +124,18 @@ unfinished.
 
 ## Verification
 
-105 unit tests (`PYTHONPATH=src python3 -m unittest discover -s tests`), 96%
-statement coverage across `src/`.
+136 unit tests (`PYTHONPATH=src python3 -m unittest discover -s tests`), 91.8-100%
+statement coverage per module via stdlib `trace` (lowest: `walk.py` 91.8%,
+`blast.py` 92.6%, `scan.py` 96.6%, `report.py` 100%). Publication state is tested
+against real `git` in a temporary
+repository per test, not against a stub.
+
+Measured again on the live host (2026-11-08): 10,503 files scanned, 50,752
+skipped and reported, 264 findings in 17.2 s. Publication states on this host are
+all `no-git-worktree` — `~/.hermes` is not a repository — so this change moves
+**no finding** here. It changes what the report can *say* about a finding inside
+a repository, which is where the published/unpublished distinction decides the
+order.
 
 Measured against the live host (2026-10-30): 9,643 files scanned, 50,599 skipped
 and reported, **17 findings in 17 files**. First real outing corrected its own

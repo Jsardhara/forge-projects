@@ -6,7 +6,16 @@ pattern ids, class names, signals and a 4-char fingerprint.
 import json
 from typing import NamedTuple
 
-CLASS_ORDER = ("env", "env-backup", "log-leak", "backup-blob", "doc-fixture", "unknown")
+from .classify import CLASSES
+
+# One source of truth: the renderer must not be able to disagree with the
+# classifier about what classes exist.
+CLASS_ORDER = CLASSES
+
+
+def class_rank(klass: str) -> int:
+    """Lower is more specific. An unknown label sorts last, never first."""
+    return CLASSES.index(klass) if klass in CLASSES else len(CLASSES)
 
 
 class Finding(NamedTuple):

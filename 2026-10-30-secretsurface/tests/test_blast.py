@@ -27,18 +27,25 @@ class BlastSignalTests(unittest.TestCase):
             os.chmod(path, 0o600)
             self.assertNotIn("world-readable", blast_signals(path, "unknown"))
 
-    def test_file_inside_git_worktree_is_flagged(self):
+    def test_bare_git_dir_without_a_real_repo_is_unknown_not_published(self):
+        # A `.git` that exists but answers nothing proves nothing. It used to
+        # report `in-git-worktree`, which read as "can be committed"; an
+        # unanswerable question must now report `git-unknown`.
         with tempfile.TemporaryDirectory() as tmp:
             (Path(tmp) / ".git").mkdir()
             path = Path(tmp) / "f.txt"
             path.write_text("x")
-            self.assertIn("in-git-worktree", blast_signals(path, "unknown"))
+            signals = blast_signals(path, "unknown")
+            self.assertIn("git-unknown", signals)
+            self.assertNotIn("in-git-worktree", signals)
 
-    def test_file_outside_git_is_not_flagged(self):
+    def test_file_outside_git_is_not_published(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "f.txt"
             path.write_text("x")
-            self.assertNotIn("in-git-worktree", blast_signals(path, "unknown"))
+            signals = blast_signals(path, "unknown")
+            self.assertIn("no-git-worktree", signals)
+            self.assertNotIn("in-git-worktree", signals)
 
     def test_env_backup_class_implies_superseded_but_live(self):
         with tempfile.TemporaryDirectory() as tmp:
