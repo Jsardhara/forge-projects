@@ -1,0 +1,9 @@
+{
+  "name": "llama-modchip-deepseek-v4-flash-284b",
+  "peak_gib": 57.61,
+  "shm_gib": 0,
+  "headroom_pct": 10,
+  "source": "README.md table, 'DeepSeek-V4-Flash 284B (56.56 GiB, 1.71 bpw)' -> 'Peak VmRSS @ 256K ctx 57.61 GiB'",
+  "source_url": "https://github.com/synchopate/llama-modchip",
+  "vendor_claim": "fits in 62.5 GiB usable Linux RAM with zero NVMe swap"
+}
