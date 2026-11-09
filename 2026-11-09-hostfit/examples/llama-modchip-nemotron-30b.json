@@ -1,0 +1,9 @@
+{
+  "name": "llama-modchip-nemotron-30b-a3b-256k",
+  "peak_gib": 15.0,
+  "shm_gib": 0.5,
+  "headroom_pct": 10,
+  "source": "README.md table, 'Nemotron-3.5-30B-A3B (14.35 GiB, 3.75 bpw)' + 432 MB KV at 256K ctx",
+  "source_url": "https://github.com/synchopate/llama-modchip",
+  "vendor_claim": "25.0-60.4 tok/s on pure CPU, 16-32 GB RAM class"
+}
